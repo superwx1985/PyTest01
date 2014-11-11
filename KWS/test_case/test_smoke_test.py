@@ -10,7 +10,7 @@ if False:
     br.get(KWS_module.baseURL)
 
 
-class Mytest(MyTestCase):
+class MyTest(MyTestCase):
 
     def setUp(self):
         # environment = 1  # 1=qa, 2=stg, 3=live
@@ -189,9 +189,9 @@ class Mytest(MyTestCase):
 def make_TC_suite():
 
     suite = unittest.TestSuite()
-    #suite.addTest(Mytest('test_smoke_test_Amazon_logout',1,3))
-    suite.addTest(Mytest('sample2',1,1))
-    suite.addTest(Mytest('sample1'))
+    #suite.addTest(MyTest('test_smoke_test_Amazon_logout',1,3))
+    suite.addTest(MyTest('sample2',1,1))
+    suite.addTest(MyTest('sample1'))
     return suite
 
 

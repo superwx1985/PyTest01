@@ -12,9 +12,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-environment = ''
-browser = ''
-baseURL = ''
 ff_profile = 'C:\\Users\\viwang\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\yj7r4nzk.tester'
 chromeoption1 = webdriver.ChromeOptions()
 chromeoption1._arguments = ['test-type', "start-maximized", "no-default-browser-check"]

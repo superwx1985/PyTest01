@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest, time, re, random, HTMLTestRunner, multiprocessing, threading, sys, os
-from KWS.test_case import test_smoke_test
+from KWS.test_case import test_smoke_test, KWS_ListPage
 from KWS import send_report
 
 #===============================================================================
@@ -62,25 +62,25 @@ suite = unittest.TestSuite()
 
 def suite1():
     suite = unittest.TestSuite()
-    suite.addTest(test_smoke_test.Mytest('test_smoke_test_CC_logout',1,2))
-    suite.addTest(test_smoke_test.Mytest('test_smoke_test_CC_login',1,2))
+    suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_logout',1,2))
+    suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_login',1,2))
     return suite
 
 def suite2():
     suite = unittest.TestSuite()
-    suite.addTest(test_smoke_test.Mytest('test_smoke_test_Paypal_logout',1,2))
-    suite.addTest(test_smoke_test.Mytest('test_smoke_test_Paypal_login',1,2))
+    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Paypal_logout',1,2))
+    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Paypal_login',1,2))
     return suite
 
 def suite3():
     suite = unittest.TestSuite()
-    #suite.addTest(test_smoke_test.Mytest('sample1',1,3))
-    suite.addTest(test_smoke_test.Mytest('test_smoke_test_Amazon_logout',1,3))
-    suite.addTest(test_smoke_test.Mytest('test_smoke_test_Amazon_login',1,3))
+    #suite.addTest(test_smoke_test.MyTest('sample1',1,3))
+    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Amazon_logout',1,3))
+    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Amazon_login',1,3))
     return suite
 
-suite.addTest(test_smoke_test.Mytest('sample1',1,3))
-#suite.addTest(test_smoke_test.Mytest('sample2',1,1))
+suite.addTest(KWS_ListPage.MyTest('test_VerifyTheSearchResultReturnedIsRelatedToSearchCondition',1,3))
+#suite.addTest(test_smoke_test.MyTest('sample2',1,1))
 
 #suite.addTest(suite1())     #这样可以把几个 testcase 组合成一组
 #suite.addTest(suite2())
