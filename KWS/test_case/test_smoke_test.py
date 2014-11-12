@@ -7,7 +7,6 @@ from KWS.MyTestCase import MyTestCase
 
 if False:
     br = webdriver.Firefox()
-    br.get(KWS_module.baseURL)
 
 
 class MyTest(MyTestCase):

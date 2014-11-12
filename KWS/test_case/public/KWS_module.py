@@ -24,11 +24,11 @@ class Driver(object):
         self.environment = environment
         self.browser = browser
         if self.environment == 1: 
-            self.baseURL = 'http://qa.weddingshop.theknot.com/'
+            self.baseURL = 'https://qa.weddingshop.theknot.com/'
         elif self.environment == 2:
-            self.baseURL = 'http://stg.weddingshop.theknot.com/'
+            self.baseURL = 'https://stg.weddingshop.theknot.com/'
         elif self.environment == 3:
-            self.baseURL = 'http://weddingshop.theknot.com/'
+            self.baseURL = 'https://weddingshop.theknot.com/'
         else:
             print('no such environment, please check your setting')
             exit()
