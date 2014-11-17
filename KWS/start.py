@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import unittest, time, re, random, HTMLTestRunner, multiprocessing, threading, sys, os
+import HTMLTestRunner, unittest, time, re, random, multiprocessing, threading, sys, os
 from KWS.test_case import test_smoke_test, KWS_ListPage
 from KWS import send_report
 
@@ -58,6 +58,7 @@ def RunCase(suite, multi=0):
         for proc in proclist: proc.start()
         for proc in proclist: proc.join()
     fp.close()
+    return reportname
 
 #####################################################################################################################
 
@@ -94,9 +95,10 @@ suite = discover_TC('*ListPage*')
 # suite.addTest(suite3())
 
 print('test suite: ', suite)
-RunCase(suite, 0)  # 第二位参数代表是否用多线程运行
+reportname = RunCase(suite, 0)  # 第二位参数代表是否用多线程运行
 
 # send_report.send_report('D:/vic_test_data/KWS_test/')
+print('The test report was saved as:\n' + reportname)
 print(time.strftime('%Y-%m-%d %H:%M:%S'), 'END')
 
 

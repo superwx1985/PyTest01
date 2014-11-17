@@ -24,11 +24,11 @@ class Driver(object):
         self.environment = environment
         self.browser = browser
         if self.environment == 1: 
-            self.baseURL = 'https://qa.weddingshop.theknot.com/'
+            self.baseURL = 'https://qa.weddingshop.theknot.com'
         elif self.environment == 2:
-            self.baseURL = 'https://stg.weddingshop.theknot.com/'
+            self.baseURL = 'https://stg.weddingshop.theknot.com'
         elif self.environment == 3:
-            self.baseURL = 'https://weddingshop.theknot.com/'
+            self.baseURL = 'https://weddingshop.theknot.com'
         else:
             print('no such environment, please check your setting')
             exit()
@@ -89,7 +89,7 @@ def KWS_change_option(driver, value, option=0):
     
 
 def KWS_add_product_paddle_fan(driver, quantity=10):
-    driver.br.get(driver.baseURL + 'paddle-fan.aspx')
+    driver.br.get(driver.baseURL + '/paddle-fan.aspx')
     KWS_change_quantity(driver, quantity)
     KWS_change_option(driver, 'Ivory', 0)
     driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_addToCart').click()
@@ -97,7 +97,7 @@ def KWS_add_product_paddle_fan(driver, quantity=10):
 
 def KWS_add_product_beer(driver, quantity=10):
     # driver.br.find_element_by_link_text('Engravable Beer Mug').click()
-    driver.br.get(driver.baseURL + 'engravable-beer-mug.aspx')
+    driver.br.get(driver.baseURL + '/engravable-beer-mug.aspx')
     KWS_change_quantity(driver, quantity)
     while True:
         driver.br.find_elements('id', 'ctl00_MainContentArea_ctl00_ctl00_ctl00_addToCartPersonalized')[1].click()
