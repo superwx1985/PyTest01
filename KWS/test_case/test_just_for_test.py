@@ -18,25 +18,17 @@ class MyTest(MyTestCase):
         self.err = []
         print('\nenvironment=%s, browser=%s' % (self.environment, self.browser))
          
-    def test_Search_Bar(self):
-        'KWS - (List Page) - Verify the search result returned is related to search condition.'
+    def test_01(self):
+        '01'
         try:
-            driver = self.driver
-            driver.br.get(driver.baseURL)
-            KWS_module.KWS_search(driver, 'Paper Fan')
-            Verification.verification_text_present(driver, 'Paper Fan')
+            Verification.verification_element_present(self.driver)
         except:
             raise
 
-    def test_Facets(self):
-        'KWS - (List Page) - Verify facets (left nav) appear on subsubcategory pages and work well'
+    def test_02(self):
+        '02'
         try:
-            driver = self.driver
-            driver.br.get(driver.baseURL + '/catalog/searchresults.aspx?search=wedding')
-            Verification.verification_element_present(driver, css='label[title="Click to filter results"]')
-            driver.br.find_element_by_xpath('//span[contains(text(),"reception")]').click()
-            time.sleep(2)
-            self.assertEqual(driver.br.current_url, driver.baseURL + '/catalog/searchresults.aspx?search=wedding&top_category=reception', 'did not redirect to the correct URL')
+            assert(1==2)
         except:
             raise
             

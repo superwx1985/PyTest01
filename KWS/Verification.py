@@ -6,13 +6,19 @@ Created on 2014年11月11日
 # -*- coding: utf-8 -*-
 # from selenium import webdriver
 
-def verification_text_persent(driver, kw):
-    elements = driver.br.find_elements_by_xpath('//*[contains(text(),"' + kw + '")]')
+import unittest
+
+def find_text(driver, text):
+    elements = driver.br.find_elements_by_xpath('//*[contains(text(),"' + text + '")]')
     return elements
 
-def verification_element_persent(driver, id=None, name=None, classname=None, css=None, xpath=None):
-    if id != None:
-        elements = driver.br.find_elements_by_id(id)
+def verification_text_present(driver, text):
+    elements = find_text(driver, text)
+    assert(len(elements) > 0), 'No such text'
+    
+def find_elements(driver, ID=None, name=None, classname=None, css=None, xpath=None):
+    if ID != None:
+        elements = driver.br.find_elements_by_id(ID)
     elif name != None:
         elements = driver.br.find_elements_by_name(name)
     elif classname != None:
@@ -23,5 +29,7 @@ def verification_element_persent(driver, id=None, name=None, classname=None, css
         elements = driver.br.find_elements_by_xpath(xpath)
     return elements
 
-
+def verification_element_present(driver, ID=None, name=None, classname=None, css=None, xpath=None):
+    elements = find_elements(driver, ID, name, classname, css, xpath)
+    assert(len(elements) > 0), 'No such element'
 
