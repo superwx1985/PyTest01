@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import HTMLTestRunner, unittest, time, re, random, multiprocessing, threading, sys, os
-from KWS.test_case import test_smoke_test, KWS_ListPage
+from KWS.test_case import test_smoke_test, KWS_ListPage, test_just_for_test
 from KWS import send_report
 
 def discover_TC(pyname='*smoke_test.py', TC_folder='D:/viwang/workspace/PyTest01/KWS/test_case/'):
@@ -85,8 +85,8 @@ def suite3():
     suite.addTest(test_smoke_test.MyTest('test_smoke_test_Amazon_login', 1, 3))
     return suite
 
-suite = discover_TC('*ListPage*')
-#suite.addTest(KWS_ListPage.MyTest('test_VerifyTheSearchResultReturnedIsRelatedToSearchCondition', 1, 3))
+#suite = discover_TC('*ListPage*')
+suite.addTest(test_just_for_test.MyTest('test_01', 1, 4))
 #suite.addTest(KWS_ListPage.MyTest('test_VerifyFacetsAppearOnSubsubcategoryPagesAndWorkWell', 1, 3))
 # suite.addTest(test_smoke_test.MyTest('sample2',1,1))
 

@@ -21,11 +21,12 @@ class MyTest(MyTestCase):
     def test_01(self):
         '01'
         try:
-            Verification.verification_element_present(self.driver)
+            self.driver.br.get('http://www.baidu.com/')
+            Verification.verification_element_present(self.driver,xpath='//img[@src="//www.baidu.com/img/bd_logo1.png"]')
         except:
             raise
 
-    def test_02(self):
+    def atest_02(self):
         '02'
         try:
             assert(1==2)

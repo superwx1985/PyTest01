@@ -10,42 +10,9 @@ from selenium.webdriver.common.keys import  Keys
 from selenium.webdriver.support.ui import Select
 import unittest, time, re
 import HTMLTestRunner
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-
-
-class Page(object):
-    bd_url = 'http://www.baidu.com'
-    def __init__(self, selenium_driver, base_url=bd_url, parent=None):
-        self.base_url = base_url
-        self.driver = selenium_driver
-        self.timeout = 30
-        self.parent = parent
-        self.tabs = {}
-        
-    def open(self):
-        self.driver.get(self.base_url)
-    
-    def find_element(self,*loc):
-        return self.driver.find_element(*loc)
-    
-    def send_keys(self,loc,value, clear_first=True, click_first=True):
-        try:
-            loc = getattr(self, '_%s' % loc)
-            if click_first:
-                self.find_element(*loc).click()
-            if clear_first:
-                self.find_element(*loc).clear()
-            self.find_element(*loc).send_keys(value)
-        except AttributeError:
-            print ('%s page does not have "%s" locator' %(self,loc))
-
-#===============================================================================
-# br = webdriver.Chrome()
-# if False:
-#     br.find_element('', '').send_keys()
-# loc = ('id','kw')
-# page1 = Page(br)
-# page1.open()
-# page1.find_element(*loc).send_keys('123')
-#===============================================================================
-assert(1==2)
+#br1=webdriver.Remote(command_executor='http://127.0.0.1:5556/wd/hub', desired_capabilities=DesiredCapabilities.CHROME)
+br2=webdriver.Remote(command_executor='http://172.25.20.19:5555/wd/hub', desired_capabilities=DesiredCapabilities.FIREFOX)
+#br1.close()
+br2.close()
