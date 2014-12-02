@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import HTMLTestRunner, unittest, time, re, random, multiprocessing, threading, sys, os
-from KWS.test_case import test_smoke_test, KWS_ListPage, test_just_for_test
+from KWS.test_case import test_smoke_test, list_page, test_just_for_test
 from KWS import send_report
 
 def discover_TC(pyname='*smoke_test.py', TC_folder='D:/viwang/workspace/PyTest01/KWS/test_case/'):
@@ -69,7 +69,7 @@ suite = unittest.TestSuite()
 def suite1():
     suite = unittest.TestSuite()
     suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_logout', 1, 2))
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_login', 1, 2))
+    #suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_login', 1, 2))
     return suite
 
 def suite2():
@@ -85,12 +85,10 @@ def suite3():
     suite.addTest(test_smoke_test.MyTest('test_smoke_test_Amazon_login', 1, 3))
     return suite
 
-#suite = discover_TC('*ListPage*')
-suite.addTest(test_just_for_test.MyTest('test_01', 1, 4))
-#suite.addTest(KWS_ListPage.MyTest('test_VerifyFacetsAppearOnSubsubcategoryPagesAndWorkWell', 1, 3))
-# suite.addTest(test_smoke_test.MyTest('sample2',1,1))
+#suite = discover_TC('*list_page*')
+#suite.addTest(test_just_for_test.MyTest('test_01', 1, 4))
 
-# suite.addTest(suite1())     #这样可以把几个 testcase 组合成一组
+suite.addTest(suite1())     #这样可以把几个 testcase 组合成一组
 # suite.addTest(suite2())
 # suite.addTest(suite3())
 

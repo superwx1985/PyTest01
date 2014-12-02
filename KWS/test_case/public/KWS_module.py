@@ -10,6 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from KWS import import_test_data
 
 
 ff_profile = 'C:\\Users\\viwang\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\yj7r4nzk.tester'
@@ -54,17 +55,21 @@ class Driver(object):
         self.br.implicitly_wait(30)
 
 
-def KWS_login_vic(driver):
+def login(driver,data_id=1):
     driver.br.find_element_by_id('lnkLogin').click()
-    driver.br.find_element_by_id('txtUsername').send_keys('vicwangtest@gmail.com')
-    driver.br.find_element_by_id('txtPassword').send_keys('123456')
+    data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/KWS account.csv')
+    #print('%s/%s' % (data[data_id][1], data[data_id][2]))
+    driver.br.find_element_by_id('txtUsername').clear()
+    driver.br.find_element_by_id('txtUsername').send_keys(data[data_id][1])
+    driver.br.find_element_by_id('txtPassword').clear()
+    driver.br.find_element_by_id('txtPassword').send_keys(data[data_id][2])
     driver.br.find_element_by_id('divLoginButton').click()
     # print(driver.br.title)
     # print(driver.br.current_url)
     # print(driver.br.find_element_by_id('lnkMyAccount').text)
   
 
-def KWS_change_quantity(driver, quantity=10):
+def change_quantity(driver, quantity=10):
     while True:
         if driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_txtQty').is_displayed():
             break
@@ -76,7 +81,7 @@ def KWS_change_quantity(driver, quantity=10):
     driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_txtQty').send_keys(quantity)
     
 
-def KWS_change_option(driver, value, option=0):
+def change_option(driver, value, option=0):
     while True:
         if driver.br.find_element_by_xpath('//select[@id="tkDropdown' + '0' + '"]').is_displayed():
             break
@@ -88,17 +93,17 @@ def KWS_change_option(driver, value, option=0):
     driver.br.find_element_by_xpath('//select[@id="tkDropdown' + str(option) + '"]/option[text()="' + value + '"]').click()
     
 
-def KWS_add_product_paddle_fan(driver, quantity=10):
+def add_product_paddle_fan(driver, quantity=10):
     driver.br.get(driver.baseURL + '/paddle-fan.aspx')
-    KWS_change_quantity(driver, quantity)
-    KWS_change_option(driver, 'Ivory', 0)
+    change_quantity(driver, quantity)
+    change_option(driver, 'Ivory', 0)
     driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_addToCart').click()
 
 
-def KWS_add_product_beer(driver, quantity=10):
+def add_product_beer(driver, quantity=10):
     # driver.br.find_element_by_link_text('Engravable Beer Mug').click()
     driver.br.get(driver.baseURL + '/engravable-beer-mug.aspx')
-    KWS_change_quantity(driver, quantity)
+    change_quantity(driver, quantity)
     while True:
         driver.br.find_elements('id', 'ctl00_MainContentArea_ctl00_ctl00_ctl00_addToCartPersonalized')[1].click()
         time.sleep(5)
@@ -123,50 +128,54 @@ def KWS_add_product_beer(driver, quantity=10):
     driver.br.find_element_by_id('addFromPersonalizationModal').click()
 
 
-def KWS_go_to_shopping_cart_via_cart_flyout(driver):
+def go_to_shopping_cart_via_cart_flyout(driver):
     WebDriverWait(driver.br, 30).until(lambda x: x.find_element_by_id('checkoutbtn').is_displayed())
     driver.br.find_element_by_id('checkoutbtn').click()
 
 
-def KWS_search(driver, kw):
+def search(driver, kw):
     driver.br.find_element_by_id('ctl00_tkShared_Header_txtHeaderSearchBox').send_keys(kw)
     driver.br.find_element_by_css_selector('.tk_searchbtn.btn.btn-default').click()
     # driver.br.find_element_by_link_text('Engravable Beer Mug').click()
 
-def KWS_shoping_cart_fill_address(driver):
+def shoping_cart_fill_address(driver,data_id=1):
     WebDriverWait(driver.br, 30).until(lambda x: x.find_element_by_id('mybillshipModalLabel').is_displayed())
     if not(driver.br.find_element_by_id('chkOneAddress').is_selected()):
         driver.br.find_element_by_css_selector('#chkOneAddress+label').click()
     if driver.br.find_element_by_id('CAMCheckbox1').is_selected():
         driver.br.find_element_by_css_selector('#CAMCheckbox1+label').click()
+    data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/address.csv')
+    #print('%s/%s/%s/%s/%s/%s/%s/%s/%s/%s' % (data[data_id][0], data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5], data[data_id][6], data[data_id][7], data[data_id][8], data[data_id][9]))
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="FirstName"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="FirstName"]').send_keys('Mindy')
+    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="FirstName"]').send_keys(data[data_id][1])
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="LastName"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="LastName"]').send_keys('Krupp')
+    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="LastName"]').send_keys(data[data_id][2])
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Email"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Email"]').send_keys('viwang@xogrp.com')
+    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Email"]').send_keys(data[data_id][3])
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Address1"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Address1"]').send_keys('2700 W. Anderson Ln. Suite 901')
+    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Address1"]').send_keys(data[data_id][4])
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Address2"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Address2"]').send_keys('Krupp')
+    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Address2"]').send_keys(data[data_id][5])
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="City"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="City"]').send_keys('Austin')
+    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="City"]').send_keys(data[data_id][6])
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="State"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="State"]').send_keys('TX')
+    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="State"]').send_keys(data[data_id][7])
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="ZipCode"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="ZipCode"]').send_keys('78757')
+    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="ZipCode"]').send_keys(data[data_id][8])
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Phone"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Phone"]').send_keys('(512) 498-3340')
+    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Phone"]').send_keys(data[data_id][9])
 
-def KWS_shopping_cart_checkout_as_user(driver):
+def shopping_cart_checkout_as_user(driver,data_id=1,data_id2=1):
     #driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
     WebDriverWait(driver.br, 30).until(lambda x: x.find_element_by_id('txtUsername').is_displayed())
+    data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/KWS account.csv')
+    #print('%s/%s' % (data[data_id][1], data[data_id][2]))
     driver.br.find_element_by_id('txtUsername').clear()
-    driver.br.find_element_by_id('txtUsername').send_keys('vicwangtest@gmail.com')
+    driver.br.find_element_by_id('txtUsername').send_keys(data[data_id][1])
     driver.br.find_element_by_id('txtPassword').clear()
-    driver.br.find_element_by_id('txtPassword').send_keys('123456')
+    driver.br.find_element_by_id('txtPassword').send_keys(data[data_id][2])
     driver.br.find_element_by_id('divLoginButton').click()
-    KWS_shoping_cart_fill_address(driver)
+    shoping_cart_fill_address(driver,data_id2)
     driver.br.find_element_by_id('SaveAndContinue').click()
     if driver.browser == 5:
         input('please accept the alert on the test driver, then press any key to continue')
@@ -175,11 +184,11 @@ def KWS_shopping_cart_checkout_as_user(driver):
         driver.br.switch_to_alert().accept()
 
 
-def KWS_shopping_cart_checkout_as_guest(driver):
+def shopping_cart_checkout_as_guest(driver,data_id=1):
     if 'shoppingcart.aspx' in driver.br.current_url:
         driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
     driver.br.find_element_by_id('divCheckoutAsGuestButton').click()
-    KWS_shoping_cart_fill_address(driver)
+    shoping_cart_fill_address(driver,data_id)
     driver.br.find_element_by_id('SaveAndContinue').click()
     if driver.browser == 5:
         input('please accept the alert on the test driver, then press any key to continue')
@@ -187,31 +196,35 @@ def KWS_shopping_cart_checkout_as_guest(driver):
         driver.br.switch_to_alert().accept()
 
 
-def KWS_shopping_cart_checkout_has_loged_in(driver):
+def shopping_cart_checkout_has_loged_in(driver,data_id=1):
     #driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
-    KWS_shoping_cart_fill_address(driver)
+    shoping_cart_fill_address(driver,data_id=1)
     driver.find_element_by_id('SaveAndContinue').click()
 
 
-def KWS_checkout_via_credit_card(driver):
+def checkout_via_credit_card(driver,data_id=1):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     if driver.browser in (2, 6):
         time.sleep(1)
-    driver.br.find_element_by_id('CCName').clear()
-    driver.br.find_element_by_id('CCName').send_keys('test')
-    driver.br.find_element_by_id('CCNumber').clear()
-    driver.br.find_element_by_id('CCNumber').send_keys('4111111111111111')
-    driver.br.find_element_by_id('CCCCV').clear()
-    driver.br.find_element_by_id('CCCCV').send_keys('123')
-    driver.br.find_element_by_id('CCExpMon').click()
-    driver.br.find_element_by_xpath('//select[@id="CCExpMon"]/option[text()="' + time.strftime('%m') + '"]')
-    driver.br.find_element_by_id('CCExpYear').click()
-    driver.br.find_element_by_xpath('//select[@id="CCExpYear"]/option[text()="' + time.strftime('%Y') + '"]')
-    driver.br.find_elements_by_xpath('//a[contains(text(),"SUBMIT ORDER")]')[random.randint(0, 1)].click()
+    data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/CC info.csv')
+    #print('%s/%s/%s/%s/%s' % (data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5]))
+    driver.br.find_element_by_id('ccNumber').clear()
+    driver.br.find_element_by_id('ccNumber').send_keys(data[data_id][1])
+    driver.br.find_element_by_id('ccName').clear()
+    driver.br.find_element_by_id('ccName').send_keys(data[data_id][2])
+    driver.br.find_element_by_name('ccv').clear()
+    driver.br.find_element_by_name('ccv').send_keys(data[data_id][3])
+    driver.br.find_element_by_id('ccExpMonth').click()
+    #driver.br.find_element_by_xpath('//select[@id="ccExpMonth"]/option[@value="' + time.strftime('%m') + '"]').click()
+    driver.br.find_element_by_xpath('//select[@id="ccExpMonth"]/option[@value="' + data[data_id][4] + '"]').click()
+    driver.br.find_element_by_name('expYear').click()
+    #driver.br.find_element_by_xpath('//select[@name="expYear"]/option[@value="' + time.strftime('%Y') + '"]').click()
+    driver.br.find_element_by_xpath('//select[@name="expYear"]/option[@value="' + data[data_id][5] + '"]').click()
+    driver.br.find_elements_by_xpath('//button[contains(text(),"SUBMIT ORDER")]')[random.randint(0, 1)].click()
     print(time.strftime('%Y-%m-%d %H:%M:%S'), 'cc', driver.br.find_element_by_css_selector('span.text-info.underline strong').text)
     
     
-def KWS_checkout_via_paypal(driver):
+def checkout_via_paypal(driver):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     if driver.browser in (2, 6):
         time.sleep(1)
@@ -251,11 +264,11 @@ def KWS_checkout_via_paypal(driver):
         print('no alert present >>>\n%s' %err)
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     time.sleep(1)
-    driver.br.find_elements_by_xpath('//a[contains(text(),"SUBMIT ORDER")]')[random.randint(0, 1)].click()
+    driver.br.find_elements_by_xpath('//button[contains(text(),"SUBMIT ORDER")]')[random.randint(0, 1)].click()
     print(time.strftime('%Y-%m-%d %H:%M:%S'), 'paypal', driver.br.find_element_by_css_selector('span.text-info.underline strong').text)
     
 
-def KWS_checkout_via_amazon(driver):
+def checkout_via_amazon(driver):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     if driver.browser in (2, 6):
         time.sleep(1)
@@ -278,7 +291,7 @@ def KWS_checkout_via_amazon(driver):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_css_selector('.btn.btn-default.backToShoppingCart').is_displayed())
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     time.sleep(2)
-    driver.br.find_elements_by_xpath('//a[contains(text(),"SUBMIT ORDER")]')[1].click()
+    driver.br.find_elements_by_xpath('//button[contains(text(),"SUBMIT ORDER")]')[1].click()
     print(time.strftime('%Y-%m-%d %H:%M:%S'), 'Amazon', driver.br.find_element_by_css_selector('span.text-info.underline strong').text)
 
     

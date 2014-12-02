@@ -17,7 +17,7 @@ for line in data:
 
 #===============================================================================
 # import csv
-# with open('csv1.csv', mode='r', newline='') as csvfile: 
+# with open('D:/viwang/workspace/PyTest01/vic_test/csv1.csv', mode='r', newline='') as csvfile: 
 # # 用with是用来保证运行中出错也可以正确关闭文件的，mode是指定打开方式，newline是指定换行符处理方式
 #     data = csv.reader(csvfile, delimiter=',', quotechar='|') 
 # # delimiter指定分隔符，默认是','，quotechar指定引用符，默认是'"'，这里指定了'|'，意思是两个'|'直接的内容会无视换行，分隔等符号，直接输出为一个元素
@@ -30,7 +30,7 @@ for line in data:
 #===============================================================================
 # from xml.dom import minidom 
 # 
-# dom = minidom.parse('xml1.xml')
+# dom = minidom.parse('D:/viwang/workspace/PyTest01/vic_test/xml1.xml')
 # root = dom.documentElement
 # elements=root.getElementsByTagName('item')
 # for x in elements:

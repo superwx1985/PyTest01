@@ -7,8 +7,8 @@ Created on 2014年11月11日
 import time, unittest
 from selenium import webdriver
 from KWS.test_case.public import KWS_module
-from KWS import Verification
-from KWS.MyTestCase import MyTestCase
+from KWS import verification
+from KWS.my_test_case import MyTestCase
 
     
 class MyTest(MyTestCase):
@@ -22,14 +22,14 @@ class MyTest(MyTestCase):
         '01'
         try:
             self.driver.br.get('http://www.baidu.com/')
-            Verification.verification_element_present(self.driver,xpath='//img[@src="//www.baidu.com/img/bd_logo1.png"]')
+            verification.verification_element_present(self.driver, xpath='//img[@src="//www.baidu.com/img/bd_logo1.png"]')
         except:
             raise
 
     def atest_02(self):
         '02'
         try:
-            assert(1==2)
+            assert(1 == 2)
         except:
             raise
             

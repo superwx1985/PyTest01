@@ -7,8 +7,8 @@ Created on 2014年11月11日
 import time, unittest
 from selenium import webdriver
 from KWS.test_case.public import KWS_module
-from KWS import Verification
-from KWS.MyTestCase import MyTestCase
+from KWS import verification
+from KWS.my_test_case import MyTestCase
 
     
 class MyTest(MyTestCase):
@@ -23,8 +23,8 @@ class MyTest(MyTestCase):
         try:
             driver = self.driver
             driver.br.get(driver.baseURL)
-            KWS_module.KWS_search(driver, 'Paper Fan')
-            Verification.verification_text_present(driver, 'Paper Fan')
+            KWS_module.search(driver, 'Paper Fan')
+            verification.verification_text_present(driver, 'Paper Fan')
         except:
             raise
 
@@ -33,7 +33,7 @@ class MyTest(MyTestCase):
         try:
             driver = self.driver
             driver.br.get(driver.baseURL + '/catalog/searchresults.aspx?search=wedding')
-            Verification.verification_element_present(driver, css='label[title="Click to filter results"]')
+            verification.verification_element_present(driver, css='label[title="Click to filter results"]')
             driver.br.find_element_by_xpath('//span[contains(text(),"reception")]').click()
             time.sleep(2)
             self.assertEqual(driver.br.current_url, driver.baseURL + '/catalog/searchresults.aspx?search=wedding&top_category=reception', 'did not redirect to the correct URL')
