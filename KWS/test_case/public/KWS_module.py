@@ -49,6 +49,9 @@ class Driver(object):
         elif self.browser == 6:
             self.br = webdriver.Remote(command_executor='http://172.25.20.19:4444/wd/hub', desired_capabilities=DesiredCapabilities.FIREFOX)
             self.br.maximize_window()
+        elif self.browser == 7:
+            self.br = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub', desired_capabilities=DesiredCapabilities.CHROME)
+            self.br.maximize_window()
         else:
             print('no such driver, please check your setting')
             exit()  
