@@ -31,7 +31,6 @@ class MyTest(MyTestCase):
             # time.sleep(2000)
             e2 = br.find_element_by_css_selector('ul.nav.navbar-nav>li:nth-of-type(3)>ul>li>ul>li:nth-of-type(8)>a')
             ActionChains(br).move_to_element(e1).click(e2).perform()
-
             time.sleep(5)
         except:
             raise
@@ -39,7 +38,7 @@ class MyTest(MyTestCase):
     def atest_02(self):
         '02'
         try:
-            assert(1 == 2)
+            assert(1 == 2),'failed'
         except:
             raise
             
