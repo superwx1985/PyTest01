@@ -38,7 +38,7 @@ class MyTest(MyTestCase):
     def atest_02(self):
         '02'
         try:
-            assert(1 == 2),'failed'
+            assert(1 == 2),'failedaa'
         except:
             raise
             
