@@ -16,7 +16,7 @@ class MyTest(MyTestCase):
     
     def setUp(self):
         self.environment = 1
-        self.browser = 7
+        self.browser = 1
         self.driver = KWS_module.Driver(self.environment, self.browser)
         self.err = []
         print('\nenvironment=%s, browser=%s' % (self.environment, self.browser))
@@ -26,19 +26,32 @@ class MyTest(MyTestCase):
         try:
             driver = self.driver
             br = driver.br
-            br.get(driver.baseURL)
-            e1 = br.find_element_by_css_selector('ul.nav.navbar-nav>li:nth-of-type(3)>a')
-            # time.sleep(2000)
-            e2 = br.find_element_by_css_selector('ul.nav.navbar-nav>li:nth-of-type(3)>ul>li>ul>li:nth-of-type(8)>a')
-            ActionChains(br).move_to_element(e1).click(e2).perform()
-            time.sleep(5)
+            br.get("http://127.0.0.1/")
+            currentwindow = br.current_window_handle
+            br.find_element_by_id('b2').click()
+            # time.sleep(5)
+            i=0
+            while (True):
+                i += 1
+                for window in br.window_handles:
+                    if window != currentwindow:
+                        br.switch_to.window(window)
+                        i = -1
+                if i == -1:
+                    break
+                time.sleep(1)
+                print (i)
+
+            br.find_element_by_id('a1').click()
+            time.sleep(2)
+            verification.verification_element_present(br,css='h1')
         except:
             raise
 
     def atest_02(self):
         '02'
         try:
-            assert(1 == 2),'failedaa'
+            assert(1 == 2), 'failedaa'
         except:
             raise
             
@@ -53,4 +66,5 @@ class MyTest(MyTestCase):
         self.driver.br.quit()
         
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(warnings='ignore') 
+    #suppresses a superfluous ResourceWarning which was being emitted at the time of writing.  It may have disappeared by the time you read this; feel free to try removing it!
