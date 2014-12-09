@@ -28,7 +28,7 @@ def discover_TC(pyname='*smoke_test.py', TC_folder='D:/viwang/workspace/PyTest01
 #         suite.addTests(suite_smoket_test)
 #===============================================================================
 
-def RunCase(suite, multi=0):
+def RunCase(suite, multi=0):#0为单线程，非0为多线程
     now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
     reportname = 'D:\\vic_test_data\\KWS_test\\result_' + now + '.html'  # 定义个报告存放路径，支持相对路径
     fp = open(reportname, 'wb')
@@ -68,29 +68,29 @@ suite = unittest.TestSuite()
 
 def suite1():
     suite = unittest.TestSuite()
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_logout', 1, 2))
-    #suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_login', 1, 2))
+    # suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_logout', 1, 2))
+    suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_login', 1, 2))
     return suite
 
 def suite2():
     suite = unittest.TestSuite()
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Paypal_logout', 1, 2))
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Paypal_login', 1, 2))
+    #suite.addTest(test_smoke_test.MyTest('test_smoke_test_Paypal_logout', 1, 3))
+    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Paypal_login', 1, 3))
     return suite
 
 def suite3():
     suite = unittest.TestSuite()
     # suite.addTest(test_smoke_test.MyTest('sample1',1,3))
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Amazon_logout', 1, 3))
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Amazon_login', 1, 3))
+    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Amazon_logout', 1, 2))
+    #suite.addTest(test_smoke_test.MyTest('test_smoke_test_Amazon_login', 1, 2))
     return suite
 
-#suite = discover_TC('*list_page*')
-#suite.addTest(test_just_for_test.MyTest('test_01', 1, 4))
+# suite = discover_TC('*list_page*')
+# suite.addTest(test_just_for_test.MyTest('test_01', 1, 4))
 
-suite.addTest(suite1())     #这样可以把几个 testcase 组合成一组
-# suite.addTest(suite2())
-# suite.addTest(suite3())
+# suite.addTest(suite1())     #这样可以把几个 testcase 组合成一组
+#suite.addTest(suite2())
+suite.addTest(suite1())
 
 print('test suite: ', suite)
 reportname = RunCase(suite, 0)  # 第二位参数代表是否用多线程运行

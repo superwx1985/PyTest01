@@ -52,6 +52,9 @@ class Driver(object):
         elif self.browser == 7:
             self.br = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub', desired_capabilities=DesiredCapabilities.CHROME)
             self.br.maximize_window()
+        elif self.browser == 8:
+            self.br = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub', desired_capabilities=DesiredCapabilities.INTERNETEXPLORER)
+            self.br.maximize_window()
         else:
             print('no such driver, please check your setting')
             exit()  
@@ -207,8 +210,8 @@ def shopping_cart_checkout_has_loged_in(driver,data_id=1):
 
 def checkout_via_credit_card(driver,data_id=1):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
-    if driver.browser in (2, 6):
-        time.sleep(1)
+    WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
+    time.sleep(1)
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/CC info.csv')
     #print('%s/%s/%s/%s/%s' % (data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5]))
     driver.br.find_element_by_id('ccNumber').clear()
@@ -229,13 +232,15 @@ def checkout_via_credit_card(driver,data_id=1):
     
 def checkout_via_paypal(driver):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
-    if driver.browser in (2, 6):
-        time.sleep(1)
-    driver.br.find_element_by_xpath('//a[@id="btnPaypal"]').click()
-    time.sleep(1)
+    WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
+    time.sleep(3)
+    driver.br.find_element_by_css_selector('img[alt=Paypal]').click()
+    WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
+    time.sleep(3)
     while 'paypal' not in driver.br.current_url:
-        driver.br.find_element_by_xpath('//a[@id="btnPaypal"]').click()
-        time.sleep(2)
+        driver.br.find_element_by_css_selector('img[alt=Paypal]').click()
+        WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
+        time.sleep(3)  
     elements = driver.br.find_elements_by_tag_name('input')
     for element in elements:
         if element.get_attribute('id') == 'login_email': 
@@ -266,17 +271,18 @@ def checkout_via_paypal(driver):
     except Exception as err:
         print('no alert present >>>\n%s' %err)
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
-    time.sleep(1)
+    WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
+    time.sleep(3)
     driver.br.find_elements_by_xpath('//button[contains(text(),"SUBMIT ORDER")]')[random.randint(0, 1)].click()
     print(time.strftime('%Y-%m-%d %H:%M:%S'), 'paypal', driver.br.find_element_by_css_selector('span.text-info.underline strong').text)
     
 
 def checkout_via_amazon(driver):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
-    if driver.browser in (2, 6):
-        time.sleep(1)
+    WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
+    time.sleep(3)
     nowwindow = driver.br.current_window_handle
-    driver.br.find_element_by_id('OffAmazonPaymentsWidgets0').click()
+    driver.br.find_element_by_css_selector('#payWithAmazon img').click()
     time.sleep(10)
     allwindow = driver.br.window_handles
     for x in allwindow:
@@ -291,10 +297,12 @@ def checkout_via_amazon(driver):
     driver.br.find_element_by_id('ap_password').send_keys('testtest')
     driver.br.find_element_by_id('signInSubmit').click()
     driver.br.switch_to_window(nowwindow)
-    WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_css_selector('.btn.btn-default.backToShoppingCart').is_displayed())
+    WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_css_selector('.btn.btn-default').is_displayed())
+    time.sleep(3)
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
-    time.sleep(2)
-    driver.br.find_elements_by_xpath('//button[contains(text(),"SUBMIT ORDER")]')[1].click()
+    WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
+    time.sleep(3)
+    driver.br.find_element_by_css_selector('.buffer.text-right button').click()
     print(time.strftime('%Y-%m-%d %H:%M:%S'), 'Amazon', driver.br.find_element_by_css_selector('span.text-info.underline strong').text)
 
     

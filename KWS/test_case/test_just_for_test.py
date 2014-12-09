@@ -16,12 +16,12 @@ class MyTest(MyTestCase):
     
     def setUp(self):
         self.environment = 1
-        self.browser = 1
+        self.browser = 7
         self.driver = KWS_module.Driver(self.environment, self.browser)
         self.err = []
         print('\nenvironment=%s, browser=%s' % (self.environment, self.browser))
          
-    def test_01(self):
+    def atest_01(self):
         '01'
         try:
             driver = self.driver
@@ -32,15 +32,15 @@ class MyTest(MyTestCase):
             # time.sleep(5)
             i=0
             while (True):
+                print (i)
                 i += 1
                 for window in br.window_handles:
                     if window != currentwindow:
                         br.switch_to.window(window)
                         i = -1
-                if i == -1:
+                if i == -1 or i > 10:
                     break
                 time.sleep(1)
-                print (i)
 
             br.find_element_by_id('a1').click()
             time.sleep(2)
@@ -48,10 +48,12 @@ class MyTest(MyTestCase):
         except:
             raise
 
-    def atest_02(self):
+    def test_02(self):
         '02'
         try:
-            assert(1 == 2), 'failedaa'
+            driver = self.driver
+            br = driver.br
+            br.get("https://weddingshop.theknot.com/")
         except:
             raise
             
