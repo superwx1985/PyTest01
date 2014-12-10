@@ -5,35 +5,64 @@ Created on 2014年11月11日
 '''
 # -*- coding: utf-8 -*-
 # from selenium import webdriver
+import time, datetime
 
-def find_text(br, text):
+#===========================================================================
+# ID = "id"
+# XPATH = "xpath"
+# LINK_TEXT = "link text"
+# PARTIAL_LINK_TEXT = "partial link text"
+# NAME = "name"
+# TAG_NAME = "tag name"
+# CLASS_NAME = "class name"
+# CSS_SELECTOR = "css selector"
+#===========================================================================
+
+
+def wait_for_text_present(br, text, time_):
     if not isinstance(text, str):
         raise Exception('Invalid locater')
-    elements = br.find_elements_by_xpath('//*[contains(text(),"' + text + '")]')
+    br.implicitly_wait(1)
+    for i in range(0, time_):
+        time.sleep(1)
+        elements = br.find_elements_by_xpath('//*[contains(text(),"' + text + '")]')
+        # print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), '%rs: %r presented' %(i,len(elements)))
+        if len(elements) > 0:
+            break
+    br.implicitly_wait(10)
     return elements
 
-def verification_text_present(br, text):
-    elements = find_text(br, text)
+def wait_for_element_present(br, by, value, time_):
+    br.implicitly_wait(1)
+    for i in range(0, time_):
+        time.sleep(1)
+        elements = br.find_elements(by, value)
+        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'wait_for_element_present %rs: %r presented' % (i, len(elements)))
+        if len(elements) > 0:
+            break
+    br.implicitly_wait(10)
+    return elements
+
+def wait_for_element_disappear(br, by, value, time_):
+    br.implicitly_wait(1)
+    for i in range(0, time_):
+        time.sleep(1)
+        elements = br.find_elements(by, value)
+        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'wait_for_element_disappear %rs: %r presented' % (i, len(elements)))
+        if len(elements) == 0:
+            break
+    br.implicitly_wait(10)
+    return elements
+
+def verification_text_present(br, text, time_):
+    elements = wait_for_text_present(br, text, time_)
     assert(len(elements) > 0), 'No such text'
-    print('[%s] is present' %text)
-    
-def find_elements(br, ID=None, name=None, classname=None, css=None, xpath=None):
-    if isinstance(ID, str):
-        elements = br.find_elements_by_id(ID)
-    elif isinstance(name, str):
-        elements = br.find_elements_by_name(name)
-    elif isinstance(classname, str):
-        elements = br.find_elements_by_class_name(classname)
-    elif isinstance(css, str):
-        elements = br.find_elements_by_css_selector(css)
-    elif isinstance(xpath, str):
-        elements = br.find_elements_by_xpath(xpath)
-    else:
-        raise Exception('Invalid locater')
-    return elements
+    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'text "%s" is present' % text)
 
-def verification_element_present(driver, ID=None, name=None, classname=None, css=None, xpath=None):
-    elements = find_elements(driver, ID, name, classname, css, xpath)
+def verification_element_present(br, by, value, time_):
+    elements = wait_for_element_present(br, by, value, time_)
     assert(len(elements) > 0), 'No such element'
-    print('element is present')
-
+    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'element "%s: %s" is present' % (by, value))
+    
+if __name__ == '__main__':
+    pass

@@ -4,10 +4,11 @@ Created on 2014年11月11日
 @author: viwang
 '''
 # -*- coding: utf-8 -*-
-import time, unittest
+import time, unittest, datetime
 from selenium import webdriver
 from KWS.test_case.public import KWS_module
 from KWS import verification
+from KWS import init
 from KWS.my_test_case import MyTestCase
 from selenium.webdriver.common.action_chains import ActionChains
 
@@ -16,9 +17,9 @@ class MyTest(MyTestCase):
     
     def setUp(self):
         self.environment = 1
-        self.browser = 7
-        self.driver = KWS_module.Driver(self.environment, self.browser)
-        self.err = []
+        self.browser = 3
+        self.driver = init.Driver(self.environment, self.browser)
+        #self.err = []
         print('\nenvironment=%s, browser=%s' % (self.environment, self.browser))
          
     def atest_01(self):
@@ -59,7 +60,7 @@ class MyTest(MyTestCase):
             
     def tearDown(self):
         try:
-            SSname = 'D:\\vic_test_data\\KWS_test\\result_' + time.strftime("%Y-%m-%d_%H%M%S", time.localtime()) + '_SS.png'
+            SSname = 'D:\\vic_test_data\\KWS_test\\result_' + datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.%f") + '_SS.png'
             self.driver.br.get_screenshot_as_file(SSname)
             print('SS was saved as %s\nThe final URL is %s\n' % (SSname, self.driver.br.current_url))
         except:
