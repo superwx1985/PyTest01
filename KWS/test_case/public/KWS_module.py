@@ -4,19 +4,17 @@ Created on 2014年9月10日
 @author: viwang
 '''
 # -*- coding: utf-8 -*-
-import time, random, datetime
+import time, random, datetime, wait_element
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from KWS import import_test_data
 
 
-
-
-def login(driver,data_id=1):
+def login(driver, data_id=1):
     driver.br.find_element_by_id('lnkLogin').click()
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/KWS account.csv')
-    #print('%s/%s' % (data[data_id][1], data[data_id][2]))
+    # print('%s/%s' % (data[data_id][1], data[data_id][2]))
     driver.br.find_element_by_id('txtUsername').clear()
     driver.br.find_element_by_id('txtUsername').send_keys(data[data_id][1])
     driver.br.find_element_by_id('txtPassword').clear()
@@ -82,7 +80,7 @@ def add_product_beer(driver, quantity=10):
     driver.br.find_element_by_id('Line 2').send_keys('Line 2')
     # ActionChains(driver.br).context_click(driver.br.find_elements('class name','steplabel')[2]).perform() #点击右键
     time.sleep(1)
-    #driver.br.find_element_by_id('tk_modal_container').click()
+    # driver.br.find_element_by_id('tk_modal_container').click()
     driver.br.find_element_by_id('addFromPersonalizationModal').click()
 
 
@@ -96,14 +94,14 @@ def search(driver, kw):
     driver.br.find_element_by_css_selector('.tk_searchbtn.btn.btn-default').click()
     # driver.br.find_element_by_link_text('Engravable Beer Mug').click()
 
-def shoping_cart_fill_address(driver,data_id=1):
+def shoping_cart_fill_address(driver, data_id=1):
     WebDriverWait(driver.br, 30).until(lambda x: x.find_element_by_id('mybillshipModalLabel').is_displayed())
     if not(driver.br.find_element_by_id('chkOneAddress').is_selected()):
         driver.br.find_element_by_css_selector('#chkOneAddress+label').click()
     if driver.br.find_element_by_id('CAMCheckbox1').is_selected():
         driver.br.find_element_by_css_selector('#CAMCheckbox1+label').click()
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/address.csv')
-    #print('%s/%s/%s/%s/%s/%s/%s/%s/%s/%s' % (data[data_id][0], data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5], data[data_id][6], data[data_id][7], data[data_id][8], data[data_id][9]))
+    # print('%s/%s/%s/%s/%s/%s/%s/%s/%s/%s' % (data[data_id][0], data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5], data[data_id][6], data[data_id][7], data[data_id][8], data[data_id][9]))
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="FirstName"]').clear()
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="FirstName"]').send_keys(data[data_id][1])
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="LastName"]').clear()
@@ -123,17 +121,17 @@ def shoping_cart_fill_address(driver,data_id=1):
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Phone"]').clear()
     driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Phone"]').send_keys(data[data_id][9])
 
-def shopping_cart_checkout_as_user(driver,data_id=1,data_id2=1):
-    #driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
+def shopping_cart_checkout_as_user(driver, data_id=1, data_id2=1):
+    # driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
     WebDriverWait(driver.br, 30).until(lambda x: x.find_element_by_id('txtUsername').is_displayed())
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/KWS account.csv')
-    #print('%s/%s' % (data[data_id][1], data[data_id][2]))
+    # print('%s/%s' % (data[data_id][1], data[data_id][2]))
     driver.br.find_element_by_id('txtUsername').clear()
     driver.br.find_element_by_id('txtUsername').send_keys(data[data_id][1])
     driver.br.find_element_by_id('txtPassword').clear()
     driver.br.find_element_by_id('txtPassword').send_keys(data[data_id][2])
     driver.br.find_element_by_id('divLoginButton').click()
-    shoping_cart_fill_address(driver,data_id2)
+    shoping_cart_fill_address(driver, data_id2)
     driver.br.find_element_by_id('SaveAndContinue').click()
     if driver.browser == 5:
         input('please accept the alert on the test driver, then press any key to continue')
@@ -142,11 +140,11 @@ def shopping_cart_checkout_as_user(driver,data_id=1,data_id2=1):
         driver.br.switch_to_alert().accept()
 
 
-def shopping_cart_checkout_as_guest(driver,data_id=1):
+def shopping_cart_checkout_as_guest(driver, data_id=1):
     if 'shoppingcart.aspx' in driver.br.current_url:
         driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
     driver.br.find_element_by_id('divCheckoutAsGuestButton').click()
-    shoping_cart_fill_address(driver,data_id)
+    shoping_cart_fill_address(driver, data_id)
     driver.br.find_element_by_id('SaveAndContinue').click()
     if driver.browser == 5:
         input('please accept the alert on the test driver, then press any key to continue')
@@ -154,18 +152,18 @@ def shopping_cart_checkout_as_guest(driver,data_id=1):
         driver.br.switch_to_alert().accept()
 
 
-def shopping_cart_checkout_has_loged_in(driver,data_id=1):
-    #driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
-    shoping_cart_fill_address(driver,data_id=1)
+def shopping_cart_checkout_has_loged_in(driver, data_id=1):
+    # driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
+    shoping_cart_fill_address(driver, data_id=1)
     driver.find_element_by_id('SaveAndContinue').click()
 
 
-def checkout_via_credit_card(driver,data_id=1):
+def checkout_via_credit_card(driver, data_id=1):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
     time.sleep(1)
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/CC info.csv')
-    #print('%s/%s/%s/%s/%s' % (data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5]))
+    # print('%s/%s/%s/%s/%s' % (data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5]))
     driver.br.find_element_by_id('ccNumber').clear()
     driver.br.find_element_by_id('ccNumber').send_keys(data[data_id][1])
     driver.br.find_element_by_id('ccName').clear()
@@ -173,10 +171,10 @@ def checkout_via_credit_card(driver,data_id=1):
     driver.br.find_element_by_name('ccv').clear()
     driver.br.find_element_by_name('ccv').send_keys(data[data_id][3])
     driver.br.find_element_by_id('ccExpMonth').click()
-    #driver.br.find_element_by_xpath('//select[@id="ccExpMonth"]/option[@value="' + time.strftime('%m') + '"]').click()
+    # driver.br.find_element_by_xpath('//select[@id="ccExpMonth"]/option[@value="' + time.strftime('%m') + '"]').click()
     driver.br.find_element_by_xpath('//select[@id="ccExpMonth"]/option[@value="' + data[data_id][4] + '"]').click()
     driver.br.find_element_by_name('expYear').click()
-    #driver.br.find_element_by_xpath('//select[@name="expYear"]/option[@value="' + time.strftime('%Y') + '"]').click()
+    # driver.br.find_element_by_xpath('//select[@name="expYear"]/option[@value="' + time.strftime('%Y') + '"]').click()
     driver.br.find_element_by_xpath('//select[@name="expYear"]/option[@value="' + data[data_id][5] + '"]').click()
     driver.br.find_elements_by_xpath('//button[contains(text(),"SUBMIT ORDER")]')[random.randint(0, 1)].click()
     print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'cc', driver.br.find_element_by_css_selector('span.text-info.underline strong').text)
@@ -217,11 +215,11 @@ def checkout_via_paypal(driver):
             break
     time.sleep(10)
     try:
-        print('alert present >>>\n%s' %driver.br.switch_to_alert().text)
+        print('alert present >>>\n%s' % driver.br.switch_to_alert().text)
         driver.br.switch_to_alert().accept()
         print('accept alert')
     except Exception as err:
-        print('no alert present >>>\n%s' %err)
+        print('no alert present >>>\n%s' % err)
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
     time.sleep(3)
@@ -257,4 +255,25 @@ def checkout_via_amazon(driver):
     driver.br.find_element_by_css_selector('.buffer.text-right button').click()
     print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'Amazon', driver.br.find_element_by_css_selector('span.text-info.underline strong').text)
 
+def click_add_button(driver):
+    driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_addToCart').click()
     
+def click_personalized_button(driver):
+    wait_element.try_to_click(driver.br, 'css selector', 'div.prod-buttons.text-center.btn-group-lg button', 10)
+    wait_element.wait_for_element_display(driver.br, 'id', 'tk_modal_personalization_container', 10)
+
+def click_add_button_optional(driver):
+    wait_element.try_to_click(driver.br, 'id', 'ctl00_MainContentArea_ctl00_ctl00_ctl00_addWithoutPersonalization', 10)
+
+def click_personalized_button_optional(driver):
+    wait_element.try_to_click(driver.br, 'css selector', 'div.prod-buttons.text-center.btn-group-lg button#ctl00_MainContentArea_ctl00_ctl00_ctl00_addToCartPersonalized', 10)
+    wait_element.wait_for_element_display(driver.br, 'id', 'tk_modal_personalization_container', 10)
+
+def click_header_in_personalization_modal(driver, number):
+    wait_element.try_to_click(driver.br, 'css selector', '#persaccordion>div:nth-of-type(' + str(number) + ') h2>a', 10)
+
+def select_option(driver, number, option):
+    wait_element.try_to_click(driver.br, 'xpath', '//select[@id="tkDropdown' + str(number) + '"]/option[text()="' + str(option) + '"]', 10)
+    
+def click_save_button_in_personalization_modal(driver):
+    wait_element.try_to_click(driver.br, 'id', 'addFromPersonalizationModal', 3)

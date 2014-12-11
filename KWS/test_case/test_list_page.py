@@ -4,10 +4,9 @@ Created on 2014年11月11日
 @author: viwang
 '''
 # -*- coding: utf-8 -*-
-import time, unittest, datetime
+import time, unittest, datetime, wait_element
 from selenium import webdriver
 from KWS.test_case.public import KWS_module
-from KWS import verification
 from KWS import init
 from KWS.my_test_case import MyTestCase
 
@@ -15,6 +14,8 @@ from KWS.my_test_case import MyTestCase
 class MyTest(MyTestCase):
     
     def setUp(self):
+        #self.environment = 3
+        #self.browser = 2
         self.driver = init.Driver(self.environment, self.browser)
         self.err = []
         print('\nenvironment=%s, browser=%s' % (self.environment, self.browser))
@@ -26,7 +27,7 @@ class MyTest(MyTestCase):
             br = driver.br
             br.get(driver.baseURL)
             KWS_module.search(driver, 'Paper Fan')
-            verification.verification_text_present(br, 'Paper Fan',10)
+            wait_element.wait_for_text_present(br, 'Paper Fan', 10, True)
         except:
             raise
 
@@ -36,7 +37,7 @@ class MyTest(MyTestCase):
             driver = self.driver
             br = driver.br
             br.get(driver.baseURL + '/catalog/searchresults.aspx?search=wedding')
-            verification.verification_element_present(br, 'css selector','label[title="Click to filter results"]',10)
+            wait_element.wait_for_element_display(br, 'id', 'chkFilter_top_category_0', 10, True)
             br.find_element_by_xpath('//span[contains(text(),"reception")]').click()
             time.sleep(2)
             self.assertEqual(driver.br.current_url, driver.baseURL + '/catalog/searchresults.aspx?search=wedding&top_category=reception', 'did not redirect to the correct URL')

@@ -4,10 +4,9 @@ Created on 2014年11月11日
 @author: viwang
 '''
 # -*- coding: utf-8 -*-
-import time, unittest, datetime
+import time, unittest, datetime, wait_element
 from selenium import webdriver
 from KWS.test_case.public import KWS_module
-from KWS import verification
 from KWS import init
 from KWS.my_test_case import MyTestCase
 from selenium.webdriver.common.action_chains import ActionChains
@@ -45,7 +44,7 @@ class MyTest(MyTestCase):
 
             br.find_element_by_id('a1').click()
             time.sleep(2)
-            verification.verification_element_present(br,css='h1')
+
         except:
             raise
 

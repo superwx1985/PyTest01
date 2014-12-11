@@ -8,3 +8,4 @@ import time, threading, unittest, datetime
 
 now = datetime.datetime.now()
 print (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"))
+raise Exception('aaaa')

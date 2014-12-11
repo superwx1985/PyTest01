@@ -4,11 +4,10 @@ Created on 2014年12月10日
 @author: viwang
 '''
 # -*- coding: utf-8 -*-
-import time, unittest, datetime
+import time, unittest, datetime, wait_element
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from KWS.test_case.public import KWS_module
-from KWS import verification
 from KWS import init
 from KWS.my_test_case import MyTestCase
 from selenium.webdriver.common.action_chains import ActionChains
@@ -17,56 +16,66 @@ from KWS import import_test_data
 class MyTest(MyTestCase):
     
     def setUp(self):
-        # self.environment = 1
-        # self.browser = 3
+        #self.environment = 3
+        #self.browser = 2
         self.driver = init.Driver(self.environment, self.browser)
         # self.err = []
         print('\nenvironment=%s, browser=%s' % (self.environment, self.browser))
          
-    def test_personalization_image(self):
+    def atest_personalization_image(self):
         'KWS - (Product Page) - Verify when I select options or input text, I should see a live Scene7 rendering of my selections.'
         try:
             driver = self.driver
             br = driver.br
             br.get(driver.baseURL + '/personalized-napkins-beverage.aspx')
             time.sleep(1)
-            br.find_element_by_css_selector('div.prod-buttons.text-center.btn-group-lg button').click()
-            verification.wait_for_element_present(br,'css selector','div#persCollapse1 a[data-color-swatch-js-safe-value="I Do"] img',10)
-            verification.wait_for_element_disappear(br,'css selector','#theknot.busydiv',10)
-            WebDriverWait(br,30).until(lambda x: x.find_element_by_css_selector('div#persCollapse1 a[data-color-swatch-js-safe-value="I Do"] img').is_displayed())
-            br.find_element_by_css_selector('div#persCollapse1 a[data-color-swatch-js-safe-value="I Do"] img').click()
-            br.find_element_by_css_selector('#persaccordion>div:nth-of-type(2) h2>a').click()
-            WebDriverWait(br,30).until(lambda x: x.find_element_by_css_selector('div#persCollapse2 a[data-color-swatch-js-safe-value="Grass"] img').is_displayed())
-            br.find_element_by_css_selector('div#persCollapse2 a[data-color-swatch-js-safe-value="Grass"] img').click()
-            br.find_element_by_css_selector('#persaccordion>div:nth-of-type(3) h2>a').click()
-            WebDriverWait(br,30).until(lambda x: x.find_element_by_css_selector('div#persCollapse3 a[data-color-swatch-js-safe-value="Black"] img').is_displayed())
-            br.find_element_by_css_selector('div#persCollapse3 a[data-color-swatch-js-safe-value="Black"] img').click()
-            br.find_element_by_css_selector('#persaccordion>div:nth-of-type(4) h2>a').click()
-            WebDriverWait(br,30).until(lambda x: x.find_element_by_css_selector('div#persCollapse4 a[data-color-swatch-js-safe-value="Classic"] img').is_displayed())
-            br.find_element_by_css_selector('div#persCollapse4 a[data-color-swatch-js-safe-value="Classic"] img').click()
-            br.find_element_by_css_selector('#persaccordion>div:nth-of-type(5) h2>a').click()
-            WebDriverWait(br,30).until(lambda x: x.find_element_by_css_selector('input[id="Line 1"]').is_displayed())
-            br.find_element_by_css_selector('input[id="Line 1"]').clear()
-            br.find_element_by_css_selector('input[id="Line 1"]').send_keys('Line 1')
-            br.find_element_by_css_selector('input[id="Line 2"]').clear()
-            br.find_element_by_css_selector('input[id="Line 2"]').send_keys('Line 2')
-            br.find_element_by_css_selector('#persaccordion>div:nth-of-type(6) h2>a').click()
-            WebDriverWait(br,30).until(lambda x: x.find_element_by_css_selector('input#PersonalizationQuantity').is_displayed())
-            br.find_element_by_css_selector('input#PersonalizationQuantity').click()
-            #verification.wait_for_element_present(br,'css selector','#theknot.busydiv',10)
+            KWS_module.click_personalized_button(driver)
+            wait_element.wait_for_element_disappear(br, 'id', 'theknot.busydiv', 10)
+            wait_element.try_to_click(br, 'css selector', 'div#persCollapse1 a[data-color-swatch-js-safe-value="I Do"] img', 3)
+            KWS_module.click_header_in_personalization_modal(driver, 2)
+            wait_element.try_to_click(br, 'css selector', 'div#persCollapse2 a[data-color-swatch-js-safe-value="Grass"] img', 3)
+            KWS_module.click_header_in_personalization_modal(driver, 3)
+            wait_element.try_to_click(br, 'css selector', 'div#persCollapse3 a[data-color-swatch-js-safe-value="Black"] img', 3)
+            KWS_module.click_header_in_personalization_modal(driver, 5)
+            wait_element.try_to_enter(br, 'css selector', 'input[id="Line 1"]', 3, 'Line 1')
+            wait_element.try_to_enter(br, 'css selector', 'input[id="Line 2"]', 3, 'Line 2')
+            KWS_module.click_header_in_personalization_modal(driver, 4)
+            wait_element.try_to_click(br, 'css selector', 'div#persCollapse4 a[data-color-swatch-js-safe-value="Classic"] img', 3)
+            KWS_module.click_header_in_personalization_modal(driver, 6)
+            wait_element.try_to_enter(br, 'css selector', 'input#PersonalizationQuantity', 3, '2')
             js = 'document.getElementById("tk_modal_personalization_container").scrollTop=100'
             br.execute_script(js)
-            verification.wait_for_element_disappear(br,'css selector','#theknot.busydiv',10)
-
+            wait_element.wait_for_element_disappear(br, 'css selector', '#theknot.busydiv', 10)
+            wait_element.wait_for_element_display(br, 'xpath', '//img[@src="//theknot.scene7.com/is/image/TheKnot?src=ir{TheKnotRender/11518?&obj=imprint&color=82b741&decal&pos=-.1,-1.2&src=ir{TheKnotRender/foil?obj=foil&decal&src=is{TheKnot/MAIN?&$IMGsrc=i_do&$IMGsize=500,500&$font1=Galaxie Copernicus&$phrase1=Line 1&$phrase2=Line 2&$phrase1fs=108&$phrase2fs=108}&show&res=150&illum=1&color=000000&req=object}&res=300}&$400px$"]', 5, True)
         except:
             raise
 
-    def atest_02(self):
-        '02'
+    def test_personalization_details(self):
+        'KWS - (Product Page) - Verify personalization details should be passed to my shopping cart.'
         try:
             driver = self.driver
             br = driver.br
-           
+            br.get(driver.baseURL + '/colorblock-tote.aspx')
+            time.sleep(1)
+            KWS_module.select_option(driver, 0, 'Black')
+            KWS_module.click_personalized_button_optional(driver)
+            KWS_module.click_header_in_personalization_modal(driver, 2)
+            wait_element.try_to_enter(br, 'id', 'Initial', 3, 'X')
+            KWS_module.click_header_in_personalization_modal(driver, 3)
+            wait_element.try_to_click(br, 'css selector', 'div#persCollapse3 a[data-color-swatch-js-safe-value="White"] img', 3)
+            KWS_module.click_header_in_personalization_modal(driver, 4)
+            wait_element.try_to_click(br, 'css selector', 'div#persCollapse4 a[data-color-swatch-js-safe-value="Red"] img', 3)
+            KWS_module.click_header_in_personalization_modal(driver, 5)
+            wait_element.try_to_enter(br, 'css selector', 'input#PersonalizationQuantity', 3, '1')
+            KWS_module.click_save_button_in_personalization_modal(driver)
+            # wait_element.wait_for_element_display(br, 'css selector', 'div.panel.cart.panel-default', 10)
+            br.get(driver.baseURL + '/cart/shoppingcart.aspx')
+            wait_element.wait_for_element_display(br, 'xpath', '//div[@class="olr" and text()="Black"]', 3, True)
+            wait_element.wait_for_element_display(br, 'xpath', '//ul/li[contains(text(),"Initial") and contains(text(),"X")]', 3, True)
+            wait_element.wait_for_element_display(br, 'xpath', '//ul/li[contains(text(),"Inside Thread Color:") and contains(text(),"White")]', 3, True)
+            wait_element.wait_for_element_display(br, 'xpath', '//ul/li[contains(text(),"Outside Thread Color:") and contains(text(),"Red")]', 3, True)
+
+            time.sleep(5)
         except:
             raise
             
