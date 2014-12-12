@@ -23,74 +23,75 @@ class MyTest(MyTestCase):
         'checkout as guest via CC'
         try:
             driver = self.driver
+            br = driver.br
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_1 start')        
-            KWS_module.add_product_beer(driver, 2)
-            KWS_module.go_to_shopping_cart_via_cart_flyout(driver)
+            KWS_module.add_product_paddle_fan_Brown(driver, 7)
+            br.get('https://qa.weddingshop.theknot.com/cart/shoppingcart.aspx')
             KWS_module.shopping_cart_checkout_as_guest(driver,2)
             KWS_module.checkout_via_credit_card(driver,1)
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_1 end')
         except:
             raise
             
-    def test_smoke_test_CC_login(self):
+    def atest_smoke_test_CC_login(self):
         'checkout as user via CC'
         try:
             driver = self.driver
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_2 start')
-            KWS_module.add_product_paddle_fan(driver, 7)
-            KWS_module.go_to_shopping_cart_via_cart_flyout(driver)
+            KWS_module.add_product_beer(driver, 2)
+            br.get('https://qa.weddingshop.theknot.com/cart/shoppingcart.aspx')
             KWS_module.shopping_cart_checkout_as_user(driver,1)
             KWS_module.checkout_via_credit_card(driver,1)
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_2 end')
         except:
             raise
  
-    def test_smoke_test_Paypal_logout(self):
+    def atest_smoke_test_Paypal_logout(self):
         'checkout as guest via Paypal'
         try:
             driver = self.driver
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_3 start')
             KWS_module.add_product_beer(driver, 2)
-            KWS_module.go_to_shopping_cart_via_cart_flyout(driver)
+            br.get('https://qa.weddingshop.theknot.com/cart/shoppingcart.aspx')
             KWS_module.shopping_cart_checkout_as_guest(driver)
             KWS_module.checkout_via_paypal(driver)
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_3 end')
         except:
             raise
  
-    def test_smoke_test_Paypal_login(self):
+    def atest_smoke_test_Paypal_login(self):
         'checkout as user via Paypal'
         try:
             driver = self.driver
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_4 start')
             KWS_module.add_product_paddle_fan(driver)
-            KWS_module.go_to_shopping_cart_via_cart_flyout(driver)
+            br.get('https://qa.weddingshop.theknot.com/cart/shoppingcart.aspx')
             KWS_module.shopping_cart_checkout_as_user(driver,1)
             KWS_module.checkout_via_paypal(driver)
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_4 end')
         except:
             raise
         
-    def test_smoke_test_Amazon_logout(self):
+    def atest_smoke_test_Amazon_logout(self):
         'checkout as guest via Amazon'
         try:
             driver = self.driver
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_5 start')
             KWS_module.add_product_beer(driver, 2)
-            KWS_module.go_to_shopping_cart_via_cart_flyout(driver)
+            br.get('https://qa.weddingshop.theknot.com/cart/shoppingcart.aspx')
             KWS_module.shopping_cart_checkout_as_guest(driver)
             KWS_module.checkout_via_amazon(driver)
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_5 end')
         except:
             raise
          
-    def test_smoke_test_Amazon_login(self):
+    def atest_smoke_test_Amazon_login(self):
         'checkout as user via Amazon'
         try:
             driver = self.driver
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_6 start')
             KWS_module.add_product_paddle_fan(driver, 7)
-            KWS_module.go_to_shopping_cart_via_cart_flyout(driver)
+            br.get('https://qa.weddingshop.theknot.com/cart/shoppingcart.aspx')
             KWS_module.shopping_cart_checkout_as_user(driver,1)
             KWS_module.checkout_via_amazon(driver)
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'smoke_test_6 end')
@@ -118,16 +119,17 @@ def make_TC_suite():
 
 
 if __name__ == '__main__':
-    # unittest.main()
-    # suite = make_TC_suite()
+    unittest.main(warnings='ignore')
     
 
-    suite = unittest.TestSuite()
+    #===========================================================================
+    # suite = unittest.TestSuite()
+    # # print(suite)
+    # suite.addTest(make_TC_suite())
     # print(suite)
-    suite.addTest(make_TC_suite())
-    print(suite)
-    runner = unittest.TextTestRunner()
-    runner.run(suite)
+    # runner = unittest.TextTestRunner()
+    # runner.run(suite)
+    #===========================================================================
 
 
     #===========================================================================

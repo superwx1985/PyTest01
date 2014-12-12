@@ -68,5 +68,5 @@ class MyTest(MyTestCase):
         self.driver.br.quit()
         
 if __name__ == '__main__':
-    unittest.main(warnings='ignore') 
+    unittest.main(warnings='ignore')
     #suppresses a superfluous ResourceWarning which was being emitted at the time of writing.  It may have disappeared by the time you read this; feel free to try removing it!

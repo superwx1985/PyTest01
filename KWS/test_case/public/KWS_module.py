@@ -11,31 +11,47 @@ from selenium.webdriver.common.action_chains import ActionChains
 from KWS import import_test_data
 
 
-def login(driver, data_id=1):
-    driver.br.find_element_by_id('lnkLogin').click()
+def login_in_header(driver, data_id=1):
+    wait_element.try_to_click(driver.br, 'id', 'lnkLogin', 5)
+    fill_account_in_login_modal(driver, data_id)
+
+def fill_account_in_login_modal(driver, data_id=1):
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/KWS account.csv')
     # print('%s/%s' % (data[data_id][1], data[data_id][2]))
-    driver.br.find_element_by_id('txtUsername').clear()
-    driver.br.find_element_by_id('txtUsername').send_keys(data[data_id][1])
-    driver.br.find_element_by_id('txtPassword').clear()
-    driver.br.find_element_by_id('txtPassword').send_keys(data[data_id][2])
-    driver.br.find_element_by_id('divLoginButton').click()
+    wait_element.try_to_enter(driver.br, 'id', 'txtUsername', 5, data[data_id][1])
+    wait_element.try_to_enter(driver.br, 'id', 'txtPassword', 5, data[data_id][2])
+    wait_element.try_to_click(driver.br, 'id', 'divLoginButton', 5)
     # print(driver.br.title)
     # print(driver.br.current_url)
     # print(driver.br.find_element_by_id('lnkMyAccount').text)
-  
+
+def fill_address_in_address_modal(driver, data_id=1):
+    wait_element.wait_for_element_visible(driver.br, 'id', 'mybillshipModalLabel', 30)
+    if not(driver.br.find_element_by_id('chkOneAddress').is_selected()):
+        wait_element.try_to_click(driver.br, 'css selector', '#chkOneAddress+label', 5)
+    if driver.br.find_element_by_id('CAMCheckbox1').is_selected():
+        wait_element.try_to_click(driver.br, 'css selector', '#CAMCheckbox1+label', 5)
+    data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/address.csv')
+    # print('%s/%s/%s/%s/%s/%s/%s/%s/%s/%s' % (data[data_id][0], data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5], data[data_id][6], data[data_id][7], data[data_id][8], data[data_id][9]))
+    wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="FirstName"]', 5, data[data_id][1])
+    wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="LastName"]', 5, data[data_id][2])
+    wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="Email"]', 5, data[data_id][3])
+    wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="Address1"]', 5, data[data_id][4])
+    wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="Address2"]', 5, data[data_id][5])
+    wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="City"]', 5, data[data_id][6])
+    wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="State"]', 5, data[data_id][7])
+    wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="ZipCode"]', 5, data[data_id][8])
+    wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="Phone"]', 5, data[data_id][9])
+    wait_element.try_to_click(driver.br, 'id', 'SaveAndContinue', 5)
 
 def change_quantity(driver, quantity=10):
     while True:
         if driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_txtQty').is_displayed():
             break
         else:
-            driver.br.find_element_by_xpath('//a[contains(text(),"QUANTITY")]').click()
-            time.sleep(2)
-    # WebDriverWait(driver.br, 2).until(lambda x: x.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_txtQty').is_displayed())
-    driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_txtQty').clear()
-    driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_txtQty').send_keys(quantity)
-    
+            wait_element.try_to_click(driver.br, 'xpath', '//a[contains(text(),"QUANTITY")]', 5)
+            time.sleep(1)
+    wait_element.try_to_enter(driver.br, 'id', 'ctl00_MainContentArea_ctl00_ctl00_ctl00_txtQty', 5, quantity)    
 
 def change_option(driver, value, option=0):
     while True:
@@ -49,15 +65,13 @@ def change_option(driver, value, option=0):
     driver.br.find_element_by_xpath('//select[@id="tkDropdown' + str(option) + '"]/option[text()="' + value + '"]').click()
     
 
-def add_product_paddle_fan(driver, quantity=10):
+def add_product_paddle_fan_Brown(driver, quantity=10):
     driver.br.get(driver.baseURL + '/paddle-fan.aspx')
     change_quantity(driver, quantity)
-    change_option(driver, 'Ivory', 0)
-    driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_addToCart').click()
-
+    select_option(driver, 0, 'Brown')
+    click_add_button(driver)
 
 def add_product_beer(driver, quantity=10):
-    # driver.br.find_element_by_link_text('Engravable Beer Mug').click()
     driver.br.get(driver.baseURL + '/engravable-beer-mug.aspx')
     change_quantity(driver, quantity)
     while True:
@@ -83,56 +97,14 @@ def add_product_beer(driver, quantity=10):
     # driver.br.find_element_by_id('tk_modal_container').click()
     driver.br.find_element_by_id('addFromPersonalizationModal').click()
 
-
-def go_to_shopping_cart_via_cart_flyout(driver):
-    WebDriverWait(driver.br, 30).until(lambda x: x.find_element_by_id('checkoutbtn').is_displayed())
-    driver.br.find_element_by_id('checkoutbtn').click()
-
-
 def search(driver, kw):
     driver.br.find_element_by_id('ctl00_tkShared_Header_txtHeaderSearchBox').send_keys(kw)
     driver.br.find_element_by_css_selector('.tk_searchbtn.btn.btn-default').click()
     # driver.br.find_element_by_link_text('Engravable Beer Mug').click()
 
-def shoping_cart_fill_address(driver, data_id=1):
-    WebDriverWait(driver.br, 30).until(lambda x: x.find_element_by_id('mybillshipModalLabel').is_displayed())
-    if not(driver.br.find_element_by_id('chkOneAddress').is_selected()):
-        driver.br.find_element_by_css_selector('#chkOneAddress+label').click()
-    if driver.br.find_element_by_id('CAMCheckbox1').is_selected():
-        driver.br.find_element_by_css_selector('#CAMCheckbox1+label').click()
-    data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/address.csv')
-    # print('%s/%s/%s/%s/%s/%s/%s/%s/%s/%s' % (data[data_id][0], data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5], data[data_id][6], data[data_id][7], data[data_id][8], data[data_id][9]))
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="FirstName"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="FirstName"]').send_keys(data[data_id][1])
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="LastName"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="LastName"]').send_keys(data[data_id][2])
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Email"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Email"]').send_keys(data[data_id][3])
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Address1"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Address1"]').send_keys(data[data_id][4])
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Address2"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Address2"]').send_keys(data[data_id][5])
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="City"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="City"]').send_keys(data[data_id][6])
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="State"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="State"]').send_keys(data[data_id][7])
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="ZipCode"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="ZipCode"]').send_keys(data[data_id][8])
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Phone"]').clear()
-    driver.br.find_element_by_xpath('//div[@id="tkBillingAddress"]//input[@name="Phone"]').send_keys(data[data_id][9])
-
 def shopping_cart_checkout_as_user(driver, data_id=1, data_id2=1):
-    # driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
-    WebDriverWait(driver.br, 30).until(lambda x: x.find_element_by_id('txtUsername').is_displayed())
-    data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/KWS account.csv')
-    # print('%s/%s' % (data[data_id][1], data[data_id][2]))
-    driver.br.find_element_by_id('txtUsername').clear()
-    driver.br.find_element_by_id('txtUsername').send_keys(data[data_id][1])
-    driver.br.find_element_by_id('txtPassword').clear()
-    driver.br.find_element_by_id('txtPassword').send_keys(data[data_id][2])
-    driver.br.find_element_by_id('divLoginButton').click()
-    shoping_cart_fill_address(driver, data_id2)
-    driver.br.find_element_by_id('SaveAndContinue').click()
+    fill_account_in_login_modal(driver, data_id)
+    fill_address_in_address_modal(driver, data_id2)
     if driver.browser == 5:
         input('please accept the alert on the test driver, then press any key to continue')
     elif driver.browser == 0:
@@ -142,44 +114,29 @@ def shopping_cart_checkout_as_user(driver, data_id=1, data_id2=1):
 
 def shopping_cart_checkout_as_guest(driver, data_id=1):
     if 'shoppingcart.aspx' in driver.br.current_url:
-        driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
-    driver.br.find_element_by_id('divCheckoutAsGuestButton').click()
-    shoping_cart_fill_address(driver, data_id)
-    driver.br.find_element_by_id('SaveAndContinue').click()
+        wait_element.try_to_click(driver.br, 'xpath', '//button[contains(text(),"PROCEED TO CHECKOUT")]', 10)
+    wait_element.try_to_click(driver.br, 'id', 'divCheckoutAsGuestButton', 10)
+    fill_address_in_address_modal(driver, data_id)
     if driver.browser == 5:
         input('please accept the alert on the test driver, then press any key to continue')
     elif driver.browser == 0:
         driver.br.switch_to_alert().accept()
-
-
-def shopping_cart_checkout_has_loged_in(driver, data_id=1):
-    # driver.br.find_element_by_xpath('//button[contains(text(),"PROCEED TO CHECKOUT")]').click()
-    shoping_cart_fill_address(driver, data_id=1)
-    driver.find_element_by_id('SaveAndContinue').click()
-
 
 def checkout_via_credit_card(driver, data_id=1):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
     time.sleep(1)
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/CC info.csv')
-    # print('%s/%s/%s/%s/%s' % (data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5]))
-    driver.br.find_element_by_id('ccNumber').clear()
-    driver.br.find_element_by_id('ccNumber').send_keys(data[data_id][1])
-    driver.br.find_element_by_id('ccName').clear()
-    driver.br.find_element_by_id('ccName').send_keys(data[data_id][2])
-    driver.br.find_element_by_name('ccv').clear()
-    driver.br.find_element_by_name('ccv').send_keys(data[data_id][3])
-    driver.br.find_element_by_id('ccExpMonth').click()
-    # driver.br.find_element_by_xpath('//select[@id="ccExpMonth"]/option[@value="' + time.strftime('%m') + '"]').click()
-    driver.br.find_element_by_xpath('//select[@id="ccExpMonth"]/option[@value="' + data[data_id][4] + '"]').click()
-    driver.br.find_element_by_name('expYear').click()
-    # driver.br.find_element_by_xpath('//select[@name="expYear"]/option[@value="' + time.strftime('%Y') + '"]').click()
-    driver.br.find_element_by_xpath('//select[@name="expYear"]/option[@value="' + data[data_id][5] + '"]').click()
-    driver.br.find_elements_by_xpath('//button[contains(text(),"SUBMIT ORDER")]')[random.randint(0, 1)].click()
-    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'cc', driver.br.find_element_by_css_selector('span.text-info.underline strong').text)
-    
-    
+    wait_element.try_to_enter(driver.br, 'id', 'ccNumber', 5, data[data_id][1])
+    wait_element.try_to_enter(driver.br, 'id', 'ccName', 5, data[data_id][2])
+    wait_element.try_to_enter(driver.br, 'name', 'ccv', 5, data[data_id][3])
+    wait_element.try_to_click(driver.br, 'xpath', '//select[@id="ccExpMonth"]/option[@value="' + data[data_id][4] + '"]', 5)
+    wait_element.try_to_click(driver.br, 'xpath', '//select[@name="expYear"]/option[@value="' + data[data_id][5] + '"]', 5)
+    submit_button = wait_element.wait_for_element_visible(driver.br, 'xpath', '//button[contains(text(),"SUBMIT ORDER")]', 5)
+    submit_button[random.randint(0, 1)].click()
+    tracking_number = wait_element.wait_for_element_visible(driver.br, 'css selector', 'span.text-info.underline strong', 10)
+    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'cc', tracking_number[0].text)
+        
 def checkout_via_paypal(driver):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
@@ -259,21 +216,25 @@ def click_add_button(driver):
     driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_addToCart').click()
     
 def click_personalized_button(driver):
-    wait_element.try_to_click(driver.br, 'css selector', 'div.prod-buttons.text-center.btn-group-lg button', 10)
-    wait_element.wait_for_element_display(driver.br, 'id', 'tk_modal_personalization_container', 10)
+    wait_element.try_to_click(driver.br, 'css selector', 'div.prod-buttons.text-center.btn-group-lg button', 5)
+    wait_element.wait_for_element_visible(driver.br, 'id', 'tk_modal_personalization_container', 5)
 
 def click_add_button_optional(driver):
-    wait_element.try_to_click(driver.br, 'id', 'ctl00_MainContentArea_ctl00_ctl00_ctl00_addWithoutPersonalization', 10)
+    wait_element.try_to_click(driver.br, 'id', 'ctl00_MainContentArea_ctl00_ctl00_ctl00_addWithoutPersonalization', 5)
 
 def click_personalized_button_optional(driver):
     wait_element.try_to_click(driver.br, 'css selector', 'div.prod-buttons.text-center.btn-group-lg button#ctl00_MainContentArea_ctl00_ctl00_ctl00_addToCartPersonalized', 10)
-    wait_element.wait_for_element_display(driver.br, 'id', 'tk_modal_personalization_container', 10)
+    wait_element.wait_for_element_visible(driver.br, 'id', 'tk_modal_personalization_container', 5)
 
 def click_header_in_personalization_modal(driver, number):
-    wait_element.try_to_click(driver.br, 'css selector', '#persaccordion>div:nth-of-type(' + str(number) + ') h2>a', 10)
+    wait_element.try_to_click(driver.br, 'css selector', '#persaccordion>div:nth-of-type(' + str(number) + ') h2>a', 5)
 
 def select_option(driver, number, option):
-    wait_element.try_to_click(driver.br, 'xpath', '//select[@id="tkDropdown' + str(number) + '"]/option[text()="' + str(option) + '"]', 10)
+    wait_element.try_to_click(driver.br, 'xpath', '//select[@id="tkDropdown' + str(number) + '"]/option[text()="' + str(option) + '"]', 5)
     
 def click_save_button_in_personalization_modal(driver):
-    wait_element.try_to_click(driver.br, 'id', 'addFromPersonalizationModal', 3)
+    wait_element.try_to_click(driver.br, 'id', 'addFromPersonalizationModal', 5)
+    
+def click_checkout_button_in_mini_cart(driver):
+    wait_element.wait_for_element_visible(driver.br, 'css selector', 'div.panel.cart.panel-default', 10)
+    wait_element.try_to_click(driver.br, 'id', 'checkoutbtn', 5)

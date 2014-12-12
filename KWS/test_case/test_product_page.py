@@ -22,7 +22,7 @@ class MyTest(MyTestCase):
         # self.err = []
         print('\nenvironment=%s, browser=%s' % (self.environment, self.browser))
          
-    def atest_personalization_image(self):
+    def test_01_personalization_image(self):
         'KWS - (Product Page) - Verify when I select options or input text, I should see a live Scene7 rendering of my selections.'
         try:
             driver = self.driver
@@ -46,11 +46,11 @@ class MyTest(MyTestCase):
             js = 'document.getElementById("tk_modal_personalization_container").scrollTop=100'
             br.execute_script(js)
             wait_element.wait_for_element_disappear(br, 'css selector', '#theknot.busydiv', 10)
-            wait_element.wait_for_element_display(br, 'xpath', '//img[@src="//theknot.scene7.com/is/image/TheKnot?src=ir{TheKnotRender/11518?&obj=imprint&color=82b741&decal&pos=-.1,-1.2&src=ir{TheKnotRender/foil?obj=foil&decal&src=is{TheKnot/MAIN?&$IMGsrc=i_do&$IMGsize=500,500&$font1=Galaxie Copernicus&$phrase1=Line 1&$phrase2=Line 2&$phrase1fs=108&$phrase2fs=108}&show&res=150&illum=1&color=000000&req=object}&res=300}&$400px$"]', 5, True)
+            wait_element.wait_for_element_visible(br, 'xpath', '//img[@src="//theknot.scene7.com/is/image/TheKnot?src=ir{TheKnotRender/11518?&obj=imprint&color=82b741&decal&pos=-.1,-1.2&src=ir{TheKnotRender/foil?obj=foil&decal&src=is{TheKnot/MAIN?&$IMGsrc=i_do&$IMGsize=500,500&$font1=Galaxie Copernicus&$phrase1=Line 1&$phrase2=Line 2&$phrase1fs=108&$phrase2fs=108}&show&res=150&illum=1&color=000000&req=object}&res=300}&$400px$"]', 5, True)
         except:
             raise
 
-    def test_personalization_details(self):
+    def test_02_personalization_details(self):
         'KWS - (Product Page) - Verify personalization details should be passed to my shopping cart.'
         try:
             driver = self.driver
@@ -68,12 +68,12 @@ class MyTest(MyTestCase):
             KWS_module.click_header_in_personalization_modal(driver, 5)
             wait_element.try_to_enter(br, 'css selector', 'input#PersonalizationQuantity', 3, '1')
             KWS_module.click_save_button_in_personalization_modal(driver)
-            # wait_element.wait_for_element_display(br, 'css selector', 'div.panel.cart.panel-default', 10)
+            # wait_element.wait_for_element_visible(br, 'css selector', 'div.panel.cart.panel-default', 10)
             br.get(driver.baseURL + '/cart/shoppingcart.aspx')
-            wait_element.wait_for_element_display(br, 'xpath', '//div[@class="olr" and text()="Black"]', 3, True)
-            wait_element.wait_for_element_display(br, 'xpath', '//ul/li[contains(text(),"Initial") and contains(text(),"X")]', 3, True)
-            wait_element.wait_for_element_display(br, 'xpath', '//ul/li[contains(text(),"Inside Thread Color:") and contains(text(),"White")]', 3, True)
-            wait_element.wait_for_element_display(br, 'xpath', '//ul/li[contains(text(),"Outside Thread Color:") and contains(text(),"Red")]', 3, True)
+            wait_element.wait_for_element_visible(br, 'xpath', '//div[@class="olr" and text()="Black"]', 3, True)
+            wait_element.wait_for_element_visible(br, 'xpath', '//ul/li[contains(text(),"Initial") and contains(text(),"X")]', 3, True)
+            wait_element.wait_for_element_visible(br, 'xpath', '//ul/li[contains(text(),"Inside Thread Color:") and contains(text(),"White")]', 3, True)
+            wait_element.wait_for_element_visible(br, 'xpath', '//ul/li[contains(text(),"Outside Thread Color:") and contains(text(),"Red")]', 3, True)
 
             time.sleep(5)
         except:
@@ -90,5 +90,5 @@ class MyTest(MyTestCase):
         self.driver.br.quit()
         
 if __name__ == '__main__':
-    unittest.main(warnings='ignore') 
+    unittest.main(warnings='ignore')
     # suppresses a superfluous ResourceWarning which was being emitted at the time of writing.  It may have disappeared by the time you read this; feel free to try removing it!

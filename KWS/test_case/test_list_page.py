@@ -37,7 +37,7 @@ class MyTest(MyTestCase):
             driver = self.driver
             br = driver.br
             br.get(driver.baseURL + '/catalog/searchresults.aspx?search=wedding')
-            wait_element.wait_for_element_display(br, 'id', 'chkFilter_top_category_0', 10, True)
+            wait_element.wait_for_element_visible(br, 'id', 'chkFilter_top_category_0', 10, True)
             br.find_element_by_xpath('//span[contains(text(),"reception")]').click()
             time.sleep(2)
             self.assertEqual(driver.br.current_url, driver.baseURL + '/catalog/searchresults.aspx?search=wedding&top_category=reception', 'did not redirect to the correct URL')
