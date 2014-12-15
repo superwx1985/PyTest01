@@ -6,6 +6,7 @@ Created on 2014年12月10日
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import time, datetime, threading
 
 ff_profile = 'C:\\Users\\viwang\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\yj7r4nzk.tester'
 chromeoption1 = webdriver.ChromeOptions()
@@ -52,3 +53,21 @@ class Driver(object):
             print('no such driver, please check your setting')
             exit()  
         self.br.implicitly_wait(10)
+        
+def setUp_(environment, browser):
+    # environment = 1  # 1=qa, 2=stg, 3=live
+    # browser = 3  # 1=ie, 2=ff, 3=chrome, 4=remote_chrome, 5=remote_mac, 6=remote_ff
+    print('\n' + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), threading.currentThread(), 'environment=%s, browser=%s' % (environment, browser))
+    driver = Driver(environment, browser)
+    return driver
+
+def tearDown(driver):
+    try:
+        SSname = 'D:\\vic_test_data\\KWS_test\\result_' + datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.%f") + '_SS.png'
+        driver.br.get_screenshot_as_file(SSname)
+        print('SS was saved as %s\nThe final URL is "%s"' % (SSname, driver.br.current_url))
+    except:
+        print('cannot get the SS and final URL, because:')
+        raise
+    driver.br.quit()
+    time.sleep(1)

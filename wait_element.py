@@ -62,9 +62,9 @@ def wait_for_element_visible(br, by, value, time_, print_=False):
         time.sleep(1)
         elements = br.find_elements(by, value)
         if len(elements) > 0:
-            for e in elements:
-                if e.is_displayed():
-                    visible_elements.append(e)
+            for element in elements:
+                if element.is_displayed():
+                    visible_elements.append(element)
         if print_:
             print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'waiting for "%s: %s" display... %rs: %r/%r' % (by, value, i, len(visible_elements), len(elements)))
         if len(visible_elements) > 0:
@@ -78,29 +78,36 @@ def wait_for_element_visible(br, by, value, time_, print_=False):
 
 def wait_for_element_disappear(br, by, value, time_, print_=False):
     elements = []
+    visible_elements = []
     br.implicitly_wait(1)
     for i in range(0, time_):
         time.sleep(1)
         elements = br.find_elements(by, value)
         if print_:
-            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'waiting for "%s: %s" disappear... %rs: %r' % (by, value, i, len(elements)))
+            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'waiting for "%s: %s" disappear... %rs: %r/%r' % (by, value, i, len(visible_elements), len(elements)))
         if len(elements) == 0:
             break
+        else:
+            for element in elements:
+                if element.is_displayed():
+                    visible_elements.append(element)
+            if len(visible_elements) == 0:
+                break
     br.implicitly_wait(10)
-    assert(len(elements) == 0), 'element has not disappeared '
+    assert(len(visible_elements) == 0), 'element has not disappeared '
     if print_:
         print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'element "%s: %s" disappeared' % (by, value))
-    return elements
+    return visible_elements
 
 def try_to_click(br, by, value, time_):
-    elements = wait_for_element_display(br, by, value, time_)
+    elements = wait_for_element_visible(br, by, value, time_)
     if len(elements) > 1:
         raise Exception('mutliple elements found')
     else:
         elements[0].click()
 
 def try_to_enter(br, by, value, time_, text):
-    elements = wait_for_element_display(br, by, value, time_)
+    elements = wait_for_element_visible(br, by, value, time_)
     if len(elements) > 1:
         raise Exception('mutliple elements found')
     else:

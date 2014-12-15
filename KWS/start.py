@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import HTMLTestRunner, unittest, time, re, random, multiprocessing, threading, sys, os, datetime
-from KWS.test_case import test_smoke_test, test_list_page, test_just_for_test
+from KWS.test_case import test_checkout, test_list_page, test_just_for_test
 from KWS import send_report
 
 def discover_TC(pyname='*smoke_test.py', TC_folder='D:/viwang/workspace/PyTest01/KWS/test_case/'):
@@ -67,25 +67,27 @@ suite = unittest.TestSuite()
 
 def suite1():
     suite = unittest.TestSuite()
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_logout', 1, 3))
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_CC_login', 1, 3))
+    suite.addTest(test_checkout.MyTest('test_01', 1, 3))
+    #suite.addTest(test_checkout.MyTest('test_02', 1, 2))
     return suite
 
 def suite2():
     suite = unittest.TestSuite()
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Paypal_logout', 1, 3))
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Paypal_login', 1, 3))
+    suite.addTest(test_checkout.MyTest('test_03', 1, 2))
+    suite.addTest(test_checkout.MyTest('test_04', 1, 2))
     return suite
 
 def suite3():
     suite = unittest.TestSuite()
-    #suite.addTest(test_smoke_test.MyTest('sample1',1,3))
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Amazon_logout', 1, 3))
-    suite.addTest(test_smoke_test.MyTest('test_smoke_test_Amazon_login', 1, 3))
+    #suite.addTest(test_checkout.MyTest('sample1',1,3))
+    suite.addTest(test_checkout.MyTest('test_05', 1, 2))
+    suite.addTest(test_checkout.MyTest('test_06', 1, 2))
     return suite
 
 # suite = discover_TC('*list_page*')
-# suite.addTest(test_just_for_test.MyTest('test_01', 1, 4))
+#suite.addTest(test_just_for_test.MyTest('test_01', 1, 3))
+suite.addTest(test_list_page.MyTest('test_01', 1, 3))
+suite.addTest(test_list_page.MyTest('test_02', 1, 2))
 
 #suite.addTest(suite1())     #这样可以把几个 testcase 组合成一组
 #suite.addTest(suite2())
@@ -94,7 +96,7 @@ def suite3():
 print('test suite: ', suite)
 reportname = RunCase(suite, 0)  # 第二位参数代表是否用多线程运行
 
-# send_report.send_report('D:/vic_test_data/KWS_test/')
+send_report.send_report('D:/vic_test_data/KWS_test/')
 print('The test report was saved as:\n' + reportname)
 print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'END')
 

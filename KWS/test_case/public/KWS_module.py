@@ -10,6 +10,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from KWS import import_test_data
 
+def go_to_homepage(driver):
+    driver.br.get(driver.baseURL)
 
 def login_in_header(driver, data_id=1):
     wait_element.try_to_click(driver.br, 'id', 'lnkLogin', 5)
@@ -32,7 +34,6 @@ def fill_address_in_address_modal(driver, data_id=1):
     if driver.br.find_element_by_id('CAMCheckbox1').is_selected():
         wait_element.try_to_click(driver.br, 'css selector', '#CAMCheckbox1+label', 5)
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/address.csv')
-    # print('%s/%s/%s/%s/%s/%s/%s/%s/%s/%s' % (data[data_id][0], data[data_id][1], data[data_id][2], data[data_id][3], data[data_id][4], data[data_id][5], data[data_id][6], data[data_id][7], data[data_id][8], data[data_id][9]))
     wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="FirstName"]', 5, data[data_id][1])
     wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="LastName"]', 5, data[data_id][2])
     wait_element.try_to_enter(driver.br, 'xpath', '//div[@id="tkBillingAddress"]//input[@name="Email"]', 5, data[data_id][3])
@@ -102,36 +103,37 @@ def search(driver, kw):
     driver.br.find_element_by_css_selector('.tk_searchbtn.btn.btn-default').click()
     # driver.br.find_element_by_link_text('Engravable Beer Mug').click()
 
-def shopping_cart_checkout_as_user(driver, data_id=1, data_id2=1):
-    fill_account_in_login_modal(driver, data_id)
-    fill_address_in_address_modal(driver, data_id2)
+def shopping_cart_checkout_as_guest(driver, address=1):
+    wait_element.try_to_click(driver.br, 'xpath', '//button[contains(text(),"PROCEED TO CHECKOUT")]', 10)
+    wait_element.try_to_click(driver.br, 'id', 'divCheckoutAsGuestButton', 10)
+    fill_address_in_address_modal(driver, address)
+    if driver.browser == 5:
+        input('please accept the alert on the test driver, then press any key to continue')
+    elif driver.browser == 0:
+        driver.br.switch_to_alert().accept()
+
+def shopping_cart_checkout_as_user(driver, user=1, address=1):
+    wait_element.try_to_click(driver.br, 'xpath', '//button[contains(text(),"PROCEED TO CHECKOUT")]', 10)
+    fill_account_in_login_modal(driver, user)
+    fill_address_in_address_modal(driver, address)
     if driver.browser == 5:
         input('please accept the alert on the test driver, then press any key to continue')
     elif driver.browser == 0:
         # driver.br.get('javascript:document.getElementById("overridelink").click();')
         driver.br.switch_to_alert().accept()
 
-
-def shopping_cart_checkout_as_guest(driver, data_id=1):
-    if 'shoppingcart.aspx' in driver.br.current_url:
-        wait_element.try_to_click(driver.br, 'xpath', '//button[contains(text(),"PROCEED TO CHECKOUT")]', 10)
-    wait_element.try_to_click(driver.br, 'id', 'divCheckoutAsGuestButton', 10)
-    fill_address_in_address_modal(driver, data_id)
-    if driver.browser == 5:
-        input('please accept the alert on the test driver, then press any key to continue')
-    elif driver.browser == 0:
-        driver.br.switch_to_alert().accept()
-
-def checkout_via_credit_card(driver, data_id=1):
-    WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
-    WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
-    time.sleep(1)
+def checkout_via_credit_card(driver, ccinfo=1):
+    wait_element.wait_for_element_visible(driver.br, 'xpath', '//p[text()="Total:"]', 30)
+    #WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
+    wait_element.wait_for_element_disappear(driver.br, 'id', 'data_loading', 30)
+    #WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
+    #time.sleep(1)
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/CC info.csv')
-    wait_element.try_to_enter(driver.br, 'id', 'ccNumber', 5, data[data_id][1])
-    wait_element.try_to_enter(driver.br, 'id', 'ccName', 5, data[data_id][2])
-    wait_element.try_to_enter(driver.br, 'name', 'ccv', 5, data[data_id][3])
-    wait_element.try_to_click(driver.br, 'xpath', '//select[@id="ccExpMonth"]/option[@value="' + data[data_id][4] + '"]', 5)
-    wait_element.try_to_click(driver.br, 'xpath', '//select[@name="expYear"]/option[@value="' + data[data_id][5] + '"]', 5)
+    wait_element.try_to_enter(driver.br, 'id', 'ccNumber', 5, data[ccinfo][1])
+    wait_element.try_to_enter(driver.br, 'id', 'ccName', 5, data[ccinfo][2])
+    wait_element.try_to_enter(driver.br, 'name', 'ccv', 5, data[ccinfo][3])
+    wait_element.try_to_click(driver.br, 'xpath', '//select[@id="ccExpMonth"]/option[@value="' + data[ccinfo][4] + '"]', 5)
+    wait_element.try_to_click(driver.br, 'xpath', '//select[@name="expYear"]/option[@value="' + data[ccinfo][5] + '"]', 5)
     submit_button = wait_element.wait_for_element_visible(driver.br, 'xpath', '//button[contains(text(),"SUBMIT ORDER")]', 5)
     submit_button[random.randint(0, 1)].click()
     tracking_number = wait_element.wait_for_element_visible(driver.br, 'css selector', 'span.text-info.underline strong', 10)
@@ -150,25 +152,17 @@ def checkout_via_paypal(driver):
         time.sleep(3)  
     elements = driver.br.find_elements_by_tag_name('input')
     for element in elements:
-        if element.get_attribute('id') == 'login_email': 
-            driver.br.find_element_by_id('login_email').clear()
-            driver.br.find_element_by_id('login_email').send_keys('lyi@xogrp.com')
-            driver.br.find_element_by_id('login_password').clear()
-            driver.br.find_element_by_id('login_password').send_keys('testtest')
-            time.sleep(1)
-            driver.br.find_element_by_id('submitLogin').click()
-            time.sleep(1)
-            driver.br.find_element_by_id('continue').click()
+        if element.get_attribute('id') == 'login_email':
+            wait_element.try_to_enter(driver.br, 'id', 'login_email', 5, 'lyi@xogrp.com')
+            wait_element.try_to_enter(driver.br, 'id', 'login_password', 5, 'testtest')
+            wait_element.try_to_click(driver.br, 'id', 'submitLogin', 5)
+            wait_element.try_to_click(driver.br, 'id', 'continue', 5)
             break
         elif element.get_attribute('id') == 'email':
-            driver.br.find_element_by_id('email').clear()
-            driver.br.find_element_by_id('email').send_keys('lyi@xogrp.com')
-            driver.br.find_element_by_id('password').clear()
-            driver.br.find_element_by_id('password').send_keys('testtest')
-            time.sleep(1)
-            driver.br.find_element_by_css_selector('.btn.full.continue').click()
-            time.sleep(1)
-            driver.br.find_element_by_id('confirmButtonTop').click()
+            wait_element.try_to_enter(driver.br, 'id', 'email', 5, 'lyi@xogrp.com')
+            wait_element.try_to_enter(driver.br, 'id', 'password', 5, 'testtest')
+            wait_element.try_to_click(driver.br, 'css selector', '.btn.full.continue')
+            wait_element.try_to_click(driver.br, 'id', 'confirmButtonTop', 5)
             break
     time.sleep(10)
     try:
@@ -176,12 +170,14 @@ def checkout_via_paypal(driver):
         driver.br.switch_to_alert().accept()
         print('accept alert')
     except Exception as err:
-        print('no alert present >>>\n%s' % err)
+        print('no alert open >>>\n%s' % err)
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
-    time.sleep(3)
-    driver.br.find_elements_by_xpath('//button[contains(text(),"SUBMIT ORDER")]')[random.randint(0, 1)].click()
-    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'paypal', driver.br.find_element_by_css_selector('span.text-info.underline strong').text)
+    #time.sleep(3)
+    submit_button = wait_element.wait_for_element_visible(driver.br, 'xpath', '//button[contains(text(),"SUBMIT ORDER")]', 5)
+    submit_button[random.randint(0, 1)].click()
+    tracking_number = wait_element.wait_for_element_visible(driver.br, 'css selector', 'span.text-info.underline strong', 10)
+    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'paypal', tracking_number[0].text)
     
 
 def checkout_via_amazon(driver):
@@ -189,7 +185,7 @@ def checkout_via_amazon(driver):
     WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
     time.sleep(3)
     nowwindow = driver.br.current_window_handle
-    driver.br.find_element_by_css_selector('#payWithAmazon img').click()
+    wait_element.try_to_click(driver.br, 'css selector', '#payWithAmazon img', 5)
     time.sleep(10)
     allwindow = driver.br.window_handles
     for x in allwindow:
@@ -198,11 +194,9 @@ def checkout_via_amazon(driver):
         driver.br.switch_to_window(x)
         if driver.br.title == 'Amazon Payments: Sign In':
             break
-    driver.br.find_element_by_id('ap_email').clear()
-    driver.br.find_element_by_id('ap_email').send_keys('viwang@xogrp.com')
-    driver.br.find_element_by_id('ap_password').clear()
-    driver.br.find_element_by_id('ap_password').send_keys('testtest')
-    driver.br.find_element_by_id('signInSubmit').click()
+    wait_element.try_to_enter(driver.br, 'id', 'ap_email', 5, 'viwang@xogrp.com')
+    wait_element.try_to_enter(driver.br, 'id', 'ap_password', 5, 'testtest')
+    wait_element.try_to_click(driver.br, 'id', 'signInSubmit', 5)
     driver.br.switch_to_window(nowwindow)
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_css_selector('.btn.btn-default').is_displayed())
     time.sleep(3)
@@ -210,7 +204,8 @@ def checkout_via_amazon(driver):
     WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
     time.sleep(3)
     driver.br.find_element_by_css_selector('.buffer.text-right button').click()
-    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'Amazon', driver.br.find_element_by_css_selector('span.text-info.underline strong').text)
+    tracking_number = wait_element.wait_for_element_visible(driver.br, 'css selector', 'span.text-info.underline strong', 10)
+    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'amazon', tracking_number[0].text)
 
 def click_add_button(driver):
     driver.br.find_element_by_id('ctl00_MainContentArea_ctl00_ctl00_ctl00_addToCart').click()

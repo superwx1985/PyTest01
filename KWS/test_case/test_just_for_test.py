@@ -4,68 +4,41 @@ Created on 2014年11月11日
 @author: viwang
 '''
 # -*- coding: utf-8 -*-
-import time, unittest, datetime, wait_element
+import time, unittest, datetime, threading, wait_element
 from selenium import webdriver
 from KWS.test_case.public import KWS_module
-from KWS import init
+from KWS import import_test_data, init
 from KWS.my_test_case import MyTestCase
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
-    
 class MyTest(MyTestCase):
-    
     def setUp(self):
-        self.environment = 1
-        self.browser = 3
-        self.driver = init.Driver(self.environment, self.browser)
-        #self.err = []
-        print('\nenvironment=%s, browser=%s' % (self.environment, self.browser))
-         
-    def atest_01(self):
+        # environment = 1  # 1=qa, 2=stg, 3=live
+        browser = 2  # 1=ie, 2=ff, 3=chrome, 4=remote_chrome, 5=remote_mac, 6=remote_ff
+        self.driver = init.setUp_(self.environment, self.browser)
+        
+    def test_01(self):
         '01'
         try:
-            driver = self.driver
-            br = driver.br
-            br.get("http://127.0.0.1/")
-            currentwindow = br.current_window_handle
-            br.find_element_by_id('b2').click()
-            # time.sleep(5)
-            i=0
-            while (True):
-                print (i)
-                i += 1
-                for window in br.window_handles:
-                    if window != currentwindow:
-                        br.switch_to.window(window)
-                        i = -1
-                if i == -1 or i > 10:
-                    break
-                time.sleep(1)
-
-            br.find_element_by_id('a1').click()
-            time.sleep(2)
+            br = self.driver.br
+            br.get('http://localhost/')
+            f = EC.element_to_be_clickable((By.ID,'b3'))
+            print(f(br))
 
         except:
             raise
 
-    def test_02(self):
+    def atest_02(self):
         '02'
         try:
-            driver = self.driver
-            br = driver.br
-            br.get("https://weddingshop.theknot.com/")
+            pass
         except:
             raise
             
     def tearDown(self):
-        try:
-            SSname = 'D:\\vic_test_data\\KWS_test\\result_' + datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.%f") + '_SS.png'
-            self.driver.br.get_screenshot_as_file(SSname)
-            print('SS was saved as %s\nThe final URL is %s\n' % (SSname, self.driver.br.current_url))
-        except:
-            print('cannot get the SS and final URL, because:\n')
-            raise
-        self.driver.br.quit()
+        init.tearDown(self.driver)
         
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

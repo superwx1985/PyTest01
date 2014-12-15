@@ -39,7 +39,7 @@ def send_report(result_dir='D:\\vic_test_data\\KWS_test\\'):
     msg['To'] = receiver
     msg['date'] = time.strftime('%Y-%m-%d %H:%M:%S:%z')
      
-    msg.attach(MIMEText('KWS report',_charset='utf-8'))
+    msg.attach(MIMEText('KWS test report',_charset='utf-8'))
       
     reports = get_report(result_dir)[::-1]
   
