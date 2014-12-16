@@ -25,19 +25,6 @@ def get_txt_data(filename, print_=False):
         for line in data:print(line)
     return data
 
-class ExcleDate(object):
-    data = {}
-    map_ = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H', 9: 'I', 10: 'J', 11: 'K', 12: 'L', 13: 'M', 14: 'N', 15: 'O', 16: 'P', 17: 'Q', 18: 'R', 19: 'S', 20: 'T', 21: 'U', 22: 'V', 23: 'W', 24: 'X', 25: 'Y', 26: 'Z'}
-    def __init__(self, filename, sheep_name):
-        with xlrd.open_workbook(filename) as workbook:
-            sheep = workbook.sheet_by_name(sheep_name)
-            for i in range(0, sheep.ncols):
-                for j in range(0, sheep.nrows):
-                    if j < 27:jj = self.map_[j+1]
-                    else:jj = j
-                    self.data[jj + str(i+1)] = sheep.cell(i, j).value
-
-
 def get_excle_data(filename, sheep_name, print_=False):
     data = {}
     map_ = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H', 9: 'I', 10: 'J', 11: 'K', 12: 'L', 13: 'M', 14: 'N', 15: 'O', 16: 'P', 17: 'Q', 18: 'R', 19: 'S', 20: 'T', 21: 'U', 22: 'V', 23: 'W', 24: 'X', 25: 'Y', 26: 'Z'}
