@@ -14,6 +14,28 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from KWS.test_case.public import KWS_module
 from KWS import import_test_data
 
-line = 3
-data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/address.csv')
-print('%s/%s/%s/%s/%s/%s/%s/%s/%s/%s' % (data[line][0], data[line][1], data[line][2], data[line][3], data[line][4], data[line][5], data[line][6], data[line][7], data[line][8], data[line][9]))
+x=12116
+map_ = {0: 'err', 1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H', 9: 'I', 10: 'J', 11: 'K', 12: 'L', 13: 'M', 14: 'N', 15: 'O', 16: 'P', 17: 'Q', 18: 'R', 19: 'S', 20: 'T', 21: 'U', 22: 'V', 23: 'W', 24: 'X', 25: 'Y', 26: 'Z'}
+s=''
+while(True):
+    if x<27:
+        s=s+map_[x]
+        break
+    y = int(x/26)
+    if y > 26:
+        if x%26 == 0:
+            s=s+map_[26]
+            x = y-1
+            continue
+        s=s+map_[x%26]
+        x = y
+        continue
+    if x%26 == 0:
+        s=s+map_[26]+map_[y-1]
+    else:
+        s=s+map_[x%26]+map_[y]
+    x = y
+    if y<=26:
+        break
+s=s[::-1]
+print(s)

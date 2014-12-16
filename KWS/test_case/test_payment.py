@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
-import time, threading, unittest, datetime
+import time, unittest, datetime, threading, wait_element
 from selenium import webdriver
 from KWS.test_case.public import KWS_module
-from KWS import init
+from KWS import import_test_data, init
 from KWS.my_test_case import MyTestCase
-
-
-if False:
-    br = webdriver.Firefox()
-
+from selenium.webdriver.common.action_chains import ActionChains
 
 class MyTest(MyTestCase):
     def setUp(self):

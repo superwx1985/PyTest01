@@ -6,6 +6,7 @@ Created on 2014年12月2日
 # -*- coding: utf-8 -*-
 
 import csv
+import xlrd  # 读取excel数据，需安装xlrd
 
 def get_csv_data(filename, print_=False):
     csv_data = []
@@ -17,15 +18,70 @@ def get_csv_data(filename, print_=False):
             csv_data.append(line)
     return csv_data
 
-
-def get_txt_data(filename='D:/viwang/workspace/PyTest01/vic_test/text1.txt', print_=False):
+def get_txt_data(filename, print_=False):
     with open(filename, mode='r') as file:
         data = file.readlines()
     if print_:
         for line in data:print(line)
     return data
 
+class ExcleDate(object):
+    data = {}
+    map_ = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H', 9: 'I', 10: 'J', 11: 'K', 12: 'L', 13: 'M', 14: 'N', 15: 'O', 16: 'P', 17: 'Q', 18: 'R', 19: 'S', 20: 'T', 21: 'U', 22: 'V', 23: 'W', 24: 'X', 25: 'Y', 26: 'Z'}
+    def __init__(self, filename, sheep_name):
+        with xlrd.open_workbook(filename) as workbook:
+            sheep = workbook.sheet_by_name(sheep_name)
+            for i in range(0, sheep.ncols):
+                for j in range(0, sheep.nrows):
+                    if j < 27:jj = self.map_[j+1]
+                    else:jj = j
+                    self.data[jj + str(i+1)] = sheep.cell(i, j).value
+
+
+def get_excle_data(filename, sheep_name, print_=False):
+    data = {}
+    map_ = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H', 9: 'I', 10: 'J', 11: 'K', 12: 'L', 13: 'M', 14: 'N', 15: 'O', 16: 'P', 17: 'Q', 18: 'R', 19: 'S', 20: 'T', 21: 'U', 22: 'V', 23: 'W', 24: 'X', 25: 'Y', 26: 'Z'}
+    with xlrd.open_workbook(filename) as workbook:
+        sheep = workbook.sheet_by_name(sheep_name)
+        if print_:
+            print(sheep.nrows,'rows', sheep.ncols,'columns')
+        for r in range(0, sheep.nrows):
+            rname= str(r+1)
+            for c in range(0, sheep.ncols):
+                x=c+1
+                s=''
+                while(True):
+                    if x<27:
+                        s=s+map_[x]
+                        break
+                    y = int(x/26)
+                    if y > 26:
+                        if x%26 == 0:
+                            s=s+map_[26]
+                            x = y-1
+                            continue
+                        s=s+map_[x%26]
+                        x = y
+                        continue
+                    if x%26 == 0:
+                        s=s+map_[26]+map_[y-1]
+                    else:
+                        s=s+map_[x%26]+map_[y]
+                    x = y
+                    if y<=26:
+                        break
+                cname=s[::-1]
+                data[cname + rname] = sheep.cell(r, c).value
+                if print_:
+                    print('['+cname + str(r+1)+']'+str(sheep.cell(r,c).value)+'\t\t', end='')
+                    if c+1 == sheep.ncols:
+                        print('\n')
+    return data
+
 if __name__ == '__main__':
-    data=get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/address.csv',True)
-    print(data[1][1])
-    get_txt_data('D:/viwang/workspace/PyTest01/vic_test/text1.txt', True)
+    pass
+    # data=get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/address.csv',True)
+    # print(data[1][1])
+    # get_txt_data('D:/viwang/workspace/PyTest01/vic_test/text1.txt', True)
+    data = get_excle_data('D:/viwang/workspace/PyTest01/vic_test/excel1.xlsx', 'Sheet3' , True)
+    print(data['AB2'])

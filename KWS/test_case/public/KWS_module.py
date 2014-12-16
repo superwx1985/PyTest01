@@ -19,13 +19,9 @@ def login_in_header(driver, data_id=1):
 
 def fill_account_in_login_modal(driver, data_id=1):
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/KWS account.csv')
-    # print('%s/%s' % (data[data_id][1], data[data_id][2]))
     wait_element.try_to_enter(driver.br, 'id', 'txtUsername', 5, data[data_id][1])
     wait_element.try_to_enter(driver.br, 'id', 'txtPassword', 5, data[data_id][2])
     wait_element.try_to_click(driver.br, 'id', 'divLoginButton', 5)
-    # print(driver.br.title)
-    # print(driver.br.current_url)
-    # print(driver.br.find_element_by_id('lnkMyAccount').text)
 
 def fill_address_in_address_modal(driver, data_id=1):
     wait_element.wait_for_element_visible(driver.br, 'id', 'mybillshipModalLabel', 30)
@@ -64,7 +60,6 @@ def change_option(driver, value, option=0):
     # WebDriverWait(br, 2).until(lambda x: x.find_element_by_xpath('//select[@id="tkDropdown0"]').is_displayed())
     driver.br.find_element_by_xpath('//select[@id="tkDropdown' + str(option) + '"]').click()
     driver.br.find_element_by_xpath('//select[@id="tkDropdown' + str(option) + '"]/option[text()="' + value + '"]').click()
-    
 
 def add_product_paddle_fan_Brown(driver, quantity=10):
     driver.br.get(driver.baseURL + '/paddle-fan.aspx')
@@ -99,13 +94,22 @@ def add_product_beer(driver, quantity=10):
     driver.br.find_element_by_id('addFromPersonalizationModal').click()
 
 def search(driver, kw):
-    driver.br.find_element_by_id('ctl00_tkShared_Header_txtHeaderSearchBox').send_keys(kw)
-    driver.br.find_element_by_css_selector('.tk_searchbtn.btn.btn-default').click()
-    # driver.br.find_element_by_link_text('Engravable Beer Mug').click()
+    wait_element.try_to_enter(driver.br, 'id', 'ctl00_tkShared_Header_txtHeaderSearchBox', 5, kw)
+    wait_element.try_to_click(driver.br, 'css selector', '.tk_searchbtn.btn.btn-default', 5)
+
+def mini_cart_checkout_as_guest(driver, address=1):
+    wait_element.wait_for_element_visible(driver.br, 'css selector', 'div.panel.cart.panel-default', 30)
+    wait_element.try_to_click(driver.br, 'id', 'checkoutbtn', 5)
+    wait_element.try_to_click(driver.br, 'id', 'divCheckoutAsGuestButton', 5)
+    fill_address_in_address_modal(driver, address)
+    if driver.browser == 5:
+        input('please accept the alert on the test driver, then press any key to continue')
+    elif driver.browser == 0:
+        driver.br.switch_to_alert().accept()
 
 def shopping_cart_checkout_as_guest(driver, address=1):
-    wait_element.try_to_click(driver.br, 'xpath', '//button[contains(text(),"PROCEED TO CHECKOUT")]', 10)
-    wait_element.try_to_click(driver.br, 'id', 'divCheckoutAsGuestButton', 10)
+    wait_element.try_to_click(driver.br, 'xpath', '//button[contains(text(),"PROCEED TO CHECKOUT")]', 5)
+    wait_element.try_to_click(driver.br, 'id', 'divCheckoutAsGuestButton', 5)
     fill_address_in_address_modal(driver, address)
     if driver.browser == 5:
         input('please accept the alert on the test driver, then press any key to continue')
@@ -113,7 +117,7 @@ def shopping_cart_checkout_as_guest(driver, address=1):
         driver.br.switch_to_alert().accept()
 
 def shopping_cart_checkout_as_user(driver, user=1, address=1):
-    wait_element.try_to_click(driver.br, 'xpath', '//button[contains(text(),"PROCEED TO CHECKOUT")]', 10)
+    wait_element.try_to_click(driver.br, 'xpath', '//button[contains(text(),"PROCEED TO CHECKOUT")]', 5)
     fill_account_in_login_modal(driver, user)
     fill_address_in_address_modal(driver, address)
     if driver.browser == 5:
@@ -124,10 +128,7 @@ def shopping_cart_checkout_as_user(driver, user=1, address=1):
 
 def checkout_via_credit_card(driver, ccinfo=1):
     wait_element.wait_for_element_visible(driver.br, 'xpath', '//p[text()="Total:"]', 30)
-    #WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     wait_element.wait_for_element_disappear(driver.br, 'id', 'data_loading', 30)
-    #WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
-    #time.sleep(1)
     data = import_test_data.get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/CC info.csv')
     wait_element.try_to_enter(driver.br, 'id', 'ccNumber', 5, data[ccinfo][1])
     wait_element.try_to_enter(driver.br, 'id', 'ccName', 5, data[ccinfo][2])
@@ -229,7 +230,4 @@ def select_option(driver, number, option):
     
 def click_save_button_in_personalization_modal(driver):
     wait_element.try_to_click(driver.br, 'id', 'addFromPersonalizationModal', 5)
-    
-def click_checkout_button_in_mini_cart(driver):
-    wait_element.wait_for_element_visible(driver.br, 'css selector', 'div.panel.cart.panel-default', 10)
-    wait_element.try_to_click(driver.br, 'id', 'checkoutbtn', 5)
+
