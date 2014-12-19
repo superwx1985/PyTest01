@@ -9,7 +9,7 @@ import unittest
 
 class MyTestCase(unittest.TestCase):
 
-    def __init__(self, methodName='runTest', environment=1, browser=3):
+    def __init__(self, methodName='runTest', environment=1, browser=3, tc=None):
         """Create an instance of the class that will use the named test
            method when executed. Raises a ValueError if the instance does
            not have a method with the specified name.
@@ -41,3 +41,4 @@ class MyTestCase(unittest.TestCase):
         self.addTypeEqualityFunc(str, 'assertMultiLineEqual')
         self.environment = environment
         self.browser = browser
+        self.tc = tc

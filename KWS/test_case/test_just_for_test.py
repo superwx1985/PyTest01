@@ -19,21 +19,58 @@ class MyTest(MyTestCase):
         browser = 2  # 1=ie, 2=ff, 3=chrome, 4=remote_chrome, 5=remote_mac, 6=remote_ff
         self.driver = init.setUp_(self.environment, self.browser)
         
-    def test_01(self):
+    def atest_01(self):
         '01'
         try:
             br = self.driver.br
-            br.get('http://localhost/')
-            f = EC.element_to_be_clickable((By.ID,'b3'))
-            print(f(br))
+            data = self.tc
+            data = import_test_data.get_excle_data('D:/test.xlsx', 'Sheet1')
+            for i in range(2,data['rows']+1):
+                print (i,data['C'+str(i)])
+                if data['C'+str(i)] == 'go to url':
+                    assert(data['D'+str(i)] != ''), 'missing locator'
+                    br.get(data['D'+str(i)])
+                elif data['C'+str(i)] == 'enter':
+                    assert(data['D'+str(i)] != ''), 'missing locator'
+                    assert(data['E'+str(i)] != ''), 'missing data'
+                    locator = data['D'+str(i)].split('|')
+                    if isinstance(data['F'+str(i)], (int,float)):
+                        ot=round(data['F'+str(i)])
+                    elif data['F'+str(i)].isdigit():
+                        ot=int(data['F'+str(i)])
+                    else:
+                        ot=10
+                    wait_element.try_to_enter(br, locator[0], locator[1], ot, data['E'+str(i)])
+                elif data['C'+str(i)] == 'click':
+                    assert(data['D'+str(i)] != ''), 'missing locator'
+                    locator = data['D'+str(i)].split('|')
+                    if isinstance(data['F'+str(i)], (int,float)):
+                        ot=round(data['F'+str(i)])
+                    elif data['F'+str(i)].isdigit():
+                        ot=int(data['F'+str(i)])
+                    else:
+                        ot=10
+                    wait_element.try_to_click(br, locator[0], locator[1], ot)
+                elif data['C'+str(i)] == 'verify test':
+                    assert(data['E'+str(i)] != ''), 'missing data'
+                    if isinstance(data['F'+str(i)], (int,float)):
+                        ot=round(data['F'+str(i)])
+                    elif data['F'+str(i)].isdigit():
+                        ot=int(data['F'+str(i)])
+                    else:
+                        ot=10
+                    wait_element.wait_for_text_present(br, data['E'+str(i)], ot, True)
+                else:
+                    print('WTF')
+            print('end')
 
         except:
             raise
 
-    def atest_02(self):
-        '02'
+    def test_02(self):
+        pass
         try:
-            pass
+            assert(1==0),'fff'
         except:
             raise
             

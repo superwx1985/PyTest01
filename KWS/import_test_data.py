@@ -30,8 +30,10 @@ def get_excle_data(filename, sheep_name, print_=False):
     map_ = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H', 9: 'I', 10: 'J', 11: 'K', 12: 'L', 13: 'M', 14: 'N', 15: 'O', 16: 'P', 17: 'Q', 18: 'R', 19: 'S', 20: 'T', 21: 'U', 22: 'V', 23: 'W', 24: 'X', 25: 'Y', 26: 'Z'}
     with xlrd.open_workbook(filename) as workbook:
         sheep = workbook.sheet_by_name(sheep_name)
+        data['rows']=sheep.nrows
+        data['columns']=sheep.ncols
         if print_:
-            print(sheep.nrows,'rows', sheep.ncols,'columns')
+            print(data)
         for r in range(0, sheep.nrows):
             rname= str(r+1)
             for c in range(0, sheep.ncols):

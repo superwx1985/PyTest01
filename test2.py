@@ -1,35 +1,54 @@
 # -*- coding: utf-8 -*-
 # coding=utf-8
-from selenium import selenium
+import time, unittest, datetime, threading, wait_element
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-import time, threading, unittest, datetime
+from KWS.test_case.public import KWS_module
+from KWS import import_test_data, init
+from KWS.my_test_case import MyTestCase
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
-x=702
-done=0
-y=0
-z=0
-map_ = {0: 'Z', 1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H', 9: 'I', 10: 'J', 11: 'K', 12: 'L', 13: 'M', 14: 'N', 15: 'O', 16: 'P', 17: 'Q', 18: 'R', 19: 'S', 20: 'T', 21: 'U', 22: 'V', 23: 'W', 24: 'X', 25: 'Y', 26: 'Z'}
-list=[]
-while(True):
-    if x<27:
-        list.append(x)
-        break
-    y=x/26
-    if y<26:
-        list.append(x%26)
-        list.append(int(y))
-        break
+br=webdriver.Chrome()
+data = import_test_data.get_excle_data('D:/test.xlsx', 'Sheet1', True)
+
+
+for i in range(2,data['rows']+1):
+    print (i,data['C'+str(i)])
+    if data['C'+str(i)] == 'go to url':
+        assert(data['D'+str(i)] != ''), 'missing locator'
+        br.get(data['D'+str(i)])
+    elif data['C'+str(i)] == 'enter':
+        assert(data['D'+str(i)] != ''), 'missing locator'
+        assert(data['E'+str(i)] != ''), 'missing data'
+        locator = data['D'+str(i)].split('|')
+        if isinstance(data['F'+str(i)], (int,float)):
+            ot=round(data['F'+str(i)])
+        elif data['F'+str(i)].isdigit():
+            ot=int(data['F'+str(i)])
+        else:
+            ot=10
+        wait_element.try_to_enter(br, locator[0], locator[1], ot, data['E'+str(i)])
+    elif data['C'+str(i)] == 'click':
+        assert(data['D'+str(i)] != ''), 'missing locator'
+        locator = data['D'+str(i)].split('|')
+        if isinstance(data['F'+str(i)], (int,float)):
+            ot=round(data['F'+str(i)])
+        elif data['F'+str(i)].isdigit():
+            ot=int(data['F'+str(i)])
+        else:
+            ot=10
+        wait_element.try_to_click(br, locator[0], locator[1], ot)
+    elif data['C'+str(i)] == 'verify test':
+        assert(data['E'+str(i)] != ''), 'missing data'
+        if isinstance(data['F'+str(i)], (int,float)):
+            ot=round(data['F'+str(i)])
+        elif data['F'+str(i)].isdigit():
+            ot=int(data['F'+str(i)])
+        else:
+            ot=10
+        wait_element.wait_for_text_present(br, data['E'+str(i)], ot, True)
     else:
-        list.append(x%26)
-        x=int(y)
-
-print(702/26,702%26)
-list.sort(reverse=True)
-print(list)
-s=''
-for i in list:
-    #print(i)
-    s=s+map_[i]
-print('s is "%s"' %s)
+        print('WTF')
+print('end')
+br.quit()
