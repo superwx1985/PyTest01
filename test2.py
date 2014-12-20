@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 br=webdriver.Chrome()
-data = import_test_data.get_excle_data('D:/test.xlsx', 'Sheet1', True)
+data = import_test_data.get_excle_data('D:/vic/workspace/PyTest01/vic_test/test.xlsx', 'Sheet1', True)
 
 
 for i in range(2,data['rows']+1):

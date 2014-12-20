@@ -96,16 +96,16 @@ Created on 2014年9月24日
 #===============================================================================
 import xlrd
 
-workbook = xlrd.open_workbook('D:/viwang/workspace/PyTest01/vic_test/excel1.xlsx')
+workbook = xlrd.open_workbook('D:/vic/workspace/PyTest01/vic_test/excel1.xlsx')
 sheep = workbook.sheet_by_name('Sheet1')
 print(sheep.row_values(0))
 print(sheep.col_values(0))
 print(sheep.cell(1,0))
 print(sheep.cell(1,0).value)
-for i in range(0,sheep.ncols):
-    for j in range(0,sheep.nrows):
+for i in range(0,sheep.nrows):
+    for j in range(0,sheep.ncols):
         print(sheep.cell(i,j).value, '\t', end='')
-        if j+1 == sheep.nrows:
+        if j+1 == sheep.ncols:
             print('\n')
 
 #===============================================================================
