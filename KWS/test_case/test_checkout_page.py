@@ -27,8 +27,8 @@ class MyTest(MyTestCase):
             wait_element.wait_for_element_visible(driver.br, 'xpath', '//p[text()="Total:"]', 30)
             wait_element.wait_for_element_disappear(driver.br, 'id', 'data_loading', 30)
             data = import_test_data.get_excle_data('D:/viwang/workspace/PyTest01/KWS/test_data/Item List.xlsx','promotion code')
-            wait_element.try_to_enter(driver.br, 'name', 'code', 5, data['A3'])
-            wait_element.try_to_click(driver.br, 'css selector', 'button.btn.btn-primary.btn-sm', 5)
+            wait_element.try_to_enter(driver.br, 'id', 'CouponCode1', 5, data['A3'])
+            wait_element.try_to_click(driver.br, 'css selector', 'a.btn.btn-primary.btn-sm', 5)
             wait_element.wait_for_element_visible(driver.br, 'xpath', '//p[contains(text(),"\'SAVETENNOW\'")]', 30, True)
         except:
             raise

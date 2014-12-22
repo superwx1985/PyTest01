@@ -32,7 +32,7 @@ def wait_for_text_present(br, text, time_, print_=False):
         if len(elements) > 0:
             break
     br.implicitly_wait(10)
-    assert(len(elements) > 0), 'no such text'
+    assert(len(elements) > 0), 'no such text ==> "' + text + '"'
     if print_:
         print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'text "%s" presented' % text)
     return elements

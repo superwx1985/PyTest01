@@ -40,7 +40,11 @@ class MyTest(MyTestCase):
                         ot=int(data['F'+str(i)])
                     else:
                         ot=10
-                    wait_element.try_to_enter(br, locator[0], locator[1], ot, data['E'+str(i)])
+                    if isinstance(data['E'+str(i)], (int,float)):
+                        data_ = str(round(data['E'+str(i)]))
+                    else:
+                        data_ = data['E'+str(i)]
+                    wait_element.try_to_enter(br, locator[0], locator[1], ot, data_)
                 elif data['C'+str(i)] == 'click':
                     assert(data['D'+str(i)] != ''), 'missing locator'
                     locator = data['D'+str(i)].split('|')
