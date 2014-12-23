@@ -73,4 +73,4 @@ if __name__ == '__main__':
     # print(data[1][1])
     # get_txt_data('D:/viwang/workspace/PyTest01/vic_test/text1.txt', True)
     data = get_excle_data('D:/viwang/workspace/PyTest01/vic_test/excel1.xlsx', 'Sheet3' , True)
-    print(data['AB2'])
+    #print(data['AB2'])

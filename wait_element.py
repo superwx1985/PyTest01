@@ -6,7 +6,7 @@ Created on 2014年11月11日
 # -*- coding: utf-8 -*-
 # from selenium import webdriver
 import time, datetime
-
+from selenium.common import exceptions
 #===========================================================================
 # ID = "id"
 # XPATH = "xpath"
@@ -21,7 +21,7 @@ import time, datetime
 
 def wait_for_text_present(br, text, time_, print_=False):
     if not isinstance(text, str):
-        raise Exception('invalid locater')
+        raise TypeError('invalid locater')
     br.implicitly_wait(1)
     elements = []
     for i in range(0, time_):
@@ -36,6 +36,7 @@ def wait_for_text_present(br, text, time_, print_=False):
     if print_:
         print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'text "%s" presented' % text)
     return elements
+
 
 def wait_for_element_present(br, by, value, time_, print_=False):
     elements = []
@@ -102,14 +103,14 @@ def wait_for_element_disappear(br, by, value, time_, print_=False):
 def try_to_click(br, by, value, time_):
     elements = wait_for_element_visible(br, by, value, time_)
     if len(elements) > 1:
-        raise Exception('mutliple elements found')
+        raise exceptions.ElementNotSelectableException('mutliple elements found')
     else:
         elements[0].click()
 
 def try_to_enter(br, by, value, time_, text):
     elements = wait_for_element_visible(br, by, value, time_)
     if len(elements) > 1:
-        raise Exception('mutliple elements found')
+        raise exceptions.ElementNotSelectableException('mutliple elements found')
     else:
         elements[0].clear()
         elements[0].send_keys(text)

@@ -13,9 +13,9 @@ import HTMLTestRunner
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from KWS.test_case.public import KWS_module
 from KWS import import_test_data
+from selenium.common import exceptions 
 
-a= 'tEst'
-
-b= a.lower()
-
-print(b)
+a = 0
+def abc(a):
+    print(a)
+abc(a=+1)
