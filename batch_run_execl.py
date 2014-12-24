@@ -4,8 +4,8 @@ Created on 2014年12月22日
 @author: viwang
 '''
 # -*- coding: utf-8 -*-
-import time, datetime, threading, wait_element, os
-from KWS import run_excel_tc
+import time, datetime, threading, os
+import run_excel_tc, wait_element
 from selenium import webdriver
 
 def get_tc(tc_dir, print_=False):
@@ -79,5 +79,6 @@ def batch_run_excel(tcs, ot=10):
     print('========== END ==========\n')
         
 if __name__ == '__main__':
-    tcs = get_tc('D:\\viwang\\workspace\\PyTest01\\KWS\\test_case\\')
+    bace_dir = os.path.dirname(__file__)
+    tcs = get_tc(bace_dir+'/KWS/test_case/')
     batch_run_excel(tcs,ot=1)

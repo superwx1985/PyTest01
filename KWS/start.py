@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-import HTMLTestRunner, unittest, time, re, random, multiprocessing, threading, sys, os, datetime
+import HTMLTestRunner, unittest, time, re, random, multiprocessing, threading, sys, os, datetime, send_report
 from KWS.test_case import test_payment, test_list_page, test_just_for_test
-from KWS import send_report
 
 def discover_TC(pyname='*smoke_test.py', TC_folder='D:/viwang/workspace/PyTest01/KWS/test_case/'):
     suite = unittest.defaultTestLoader.discover(start_dir=TC_folder, pattern=pyname, top_level_dir=TC_folder)
@@ -97,7 +96,7 @@ print('test suite: ', suite)
 reportname = RunCase(suite, 0)  # 第二位参数代表是否用多线程运行
 
 send_report.send_report('D:/vic_test_data/KWS_test/')
-print('The test report was saved as:\n' + reportname)
+print('report was saved as:\n' + reportname)
 print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'END')
 
 
@@ -120,6 +119,6 @@ print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'END')
 # fp.close()  # 关闭报告文件
 # send_report.send_report('D:/vic_test_data/KWS_test/')
 #  
-# print(time.strftime('%Y-%m-%d %H:%M:%S'), 'END')
+#send_reportY-%m-%d %H:%M:%S'), 'END')
 #===============================================================================
 

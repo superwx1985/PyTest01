@@ -4,10 +4,11 @@ Created on 2014年12月22日
 @author: viwang
 '''
 # -*- coding: utf-8 -*-
-import time, datetime, threading, wait_element
+import time, datetime, threading
+import wait_element, import_test_data
 from selenium import webdriver
 from KWS.test_case.public import KWS_module
-from KWS import import_test_data, init
+from KWS import init
 from KWS.my_test_case import MyTestCase
 from selenium.webdriver.common.action_chains import ActionChains
 

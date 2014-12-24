@@ -7,6 +7,9 @@ Created on 2014年12月2日
 
 import csv
 import xlrd  # 读取excel数据，需安装xlrd
+import os
+
+bace_dir = os.path.dirname(__file__)
 
 def get_csv_data(filename, print_=False):
     csv_data = []
@@ -72,5 +75,5 @@ if __name__ == '__main__':
     # data=get_csv_data('D:/viwang/workspace/PyTest01/KWS/test_data/address.csv',True)
     # print(data[1][1])
     # get_txt_data('D:/viwang/workspace/PyTest01/vic_test/text1.txt', True)
-    data = get_excle_data('D:/viwang/workspace/PyTest01/vic_test/excel1.xlsx', 'Sheet3' , True)
+    data = get_excle_data(bace_dir+'/vic_test/excel1.xlsx', 'Sheet3' , True)
     #print(data['AB2'])

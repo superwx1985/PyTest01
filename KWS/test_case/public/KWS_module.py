@@ -4,11 +4,11 @@ Created on 2014年9月10日
 @author: viwang
 '''
 # -*- coding: utf-8 -*-
-import time, random, datetime, wait_element
+import time, random, datetime
+import import_test_data, wait_element
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from KWS import import_test_data
 
 def go_to_homepage(driver):
     driver.br.get(driver.baseURL)
