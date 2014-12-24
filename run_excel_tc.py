@@ -1,10 +1,10 @@
 '''
-Created on 2014年12月22日
+Created on 2014骞�12鏈�22鏃�
 
 @author: viwang
 '''
 # -*- coding: utf-8 -*-
-import time, datetime, threading
+import time, datetime, threading,os
 import wait_element, import_test_data
 from selenium import webdriver
 from KWS.test_case.public import KWS_module
@@ -99,8 +99,9 @@ def run_excel_tc(br, excel_file, sheet, ot=10, level=0, tcid_=1, asserted=[], fa
 
 if __name__ == '__main__':
     try:
+        bace_dir = os.path.dirname(__file__)
         br = webdriver.Chrome()
-        a = run_excel_tc(br, excel_file='D:\\viwang\\workspace\\PyTest01\\KWS\\test_case\\test_1.xls', sheet='Sheet1', ot=3)
+        a = run_excel_tc(br, excel_file=bace_dir+'\\KWS\\test_case\\test_1.xls', sheet='Sheet1', ot=3)
         print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), a)
         print('failed: %r\terror: %r' % (len(a[0]), len(a[1])))
     finally:
