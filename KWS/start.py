@@ -67,7 +67,7 @@ suite = unittest.TestSuite()
 def suite1():
     suite = unittest.TestSuite()
     #suite.addTest(test_payment.MyTest('test_01', 1, 2))
-    suite.addTest(test_payment.MyTest('test_02', 1, 1))
+    suite.addTest(test_payment.MyTest('test_02', 1, 2))
     return suite
 
 def suite2():

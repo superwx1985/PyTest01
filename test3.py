@@ -14,6 +14,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common import exceptions 
 import os
 
-bace_dir = os.path.dirname(__file__)
-print(bace_dir)
-print('\u4e2d')
+br= webdriver.Firefox()
+br.get('https://weddingshop.theknot.com/')
+br.quit()
