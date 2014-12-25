@@ -45,13 +45,13 @@ def wait_for_element_present(br, by, value, time_, print_=False):
         time.sleep(1)
         elements = br.find_elements(by, value)
         if print_:
-            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'waiting for "%s: %s" present... %rs: %r' % (by, value, i, len(elements)))
+            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'waiting for "%s|%s" present... %rs: %r' % (by, value, i, len(elements)))
         if len(elements) > 0:
             break
     br.implicitly_wait(10)
     assert(len(elements) > 0), 'no such element'
     if print_:
-        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'element "%s: %s" presented' % (by, value))
+        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'element "%s|%s" presented' % (by, value))
     return elements
 
 def wait_for_element_visible(br, by, value, time_, print_=False):
@@ -67,14 +67,14 @@ def wait_for_element_visible(br, by, value, time_, print_=False):
                 if element.is_displayed():
                     visible_elements.append(element)
         if print_:
-            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'waiting for "%s: %s" display... %rs: %r/%r' % (by, value, i, len(visible_elements), len(elements)))
+            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'waiting for "%s|%s" display... %rs: %r/%r' % (by, value, i, len(visible_elements), len(elements)))
         if len(visible_elements) > 0:
             break
     br.implicitly_wait(10)
     assert(len(elements) > 0), 'no such element'
     assert(len(visible_elements) > 0), 'the element is invisible'
     if print_:
-        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'element "%s: %s" displayed' % (by, value))
+        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'element "%s|%s" displayed' % (by, value))
     return visible_elements
 
 def wait_for_element_disappear(br, by, value, time_, print_=False):
@@ -85,7 +85,7 @@ def wait_for_element_disappear(br, by, value, time_, print_=False):
         time.sleep(1)
         elements = br.find_elements(by, value)
         if print_:
-            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'waiting for "%s: %s" disappear... %rs: %r/%r' % (by, value, i, len(visible_elements), len(elements)))
+            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'waiting for "%s|%s" disappear... %rs: %r/%r' % (by, value, i, len(visible_elements), len(elements)))
         if len(elements) == 0:
             break
         else:
@@ -97,7 +97,7 @@ def wait_for_element_disappear(br, by, value, time_, print_=False):
     br.implicitly_wait(10)
     assert(len(visible_elements) == 0), 'element has not disappeared '
     if print_:
-        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'element "%s: %s" disappeared' % (by, value))
+        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'element "%s|%s" disappeared' % (by, value))
     return visible_elements
 
 def try_to_click(br, by, value, time_):

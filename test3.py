@@ -13,7 +13,6 @@ from KWS.my_test_case import MyTestCase
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common import exceptions 
 import os
-
-br= webdriver.Firefox()
-br.get('https://weddingshop.theknot.com/')
-br.quit()
+locator = ''
+a= locator.count('|')
+print(locator,a)
