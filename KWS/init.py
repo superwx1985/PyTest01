@@ -50,8 +50,7 @@ class Driver(object):
             self.br = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub', desired_capabilities=DesiredCapabilities.INTERNETEXPLORER)
             self.br.maximize_window()
         else:
-            print('no such driver, please check your setting')
-            exit()  
+            raise Exception('no such driver, please check your setting')
         self.br.implicitly_wait(10)
         
 def setUp_(environment, browser):

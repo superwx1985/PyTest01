@@ -17,7 +17,7 @@ def get_tc(tc_dir, print_=False):
     if (print_):
         print(tcs)
     return tcs
-def batch_run_excel(tcs, ot=10):
+def batch_run_excel(tcs, ot=10, print_=False):
     print('========== BEGIN ==========\n')
     run=[]
     passed=[]
@@ -26,23 +26,10 @@ def batch_run_excel(tcs, ot=10):
     tcid=1
     tcs_result=[]
     for tc in tcs:
-        try:
-            br = webdriver.Chrome()
-            tc_result = run_excel_tc.run_excel_tc(br, excel_file=tc[0], sheet='Sheet1',ot=ot ,tcid_=tcid)
-            #print('failed: %r\terror: %r' %(len(result[0]),len(result[1])))
-            #print('failed:\n%r' %result[0])
-            #print('error:\n%r' %result[1])
-        finally:
-            try:
-                SSname = 'D:\\vic_test_data\\KWS_test\\result_' + datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.%f") + '_SS.png'
-                br.get_screenshot_as_file(SSname)
-                print('SS was saved as %s\nThe final URL is "%s"' % (SSname, br.current_url),'\n')
-            except Exception as e:
-                print('cannot get the SS and final URL, because:',e,'\n')
-            br.quit()
-            time.sleep(1)
-            tcid+=1
-            tcs_result.append((tc[1],tc_result))
+        tc_result = run_excel_tc.run_excel_tc(excel_file=tc[0],ot=ot, print_=print_, tcid=tcid)
+        time.sleep(1)
+        tcid+=1
+        tcs_result.append((tc[1],tc_result))
     #print('\n\n',tcs_result,'\n\n')
     print('\n\n========== test result ==========\n')
     for i in tcs_result:
@@ -80,5 +67,5 @@ def batch_run_excel(tcs, ot=10):
         
 if __name__ == '__main__':
     bace_dir = os.path.dirname(__file__)
-    tcs = get_tc(bace_dir+'/TC/')
-    batch_run_excel(tcs,ot=1)
+    tcs = get_tc(bace_dir+'\\TC\\')
+    batch_run_excel(tcs,ot=3,print_=True)
