@@ -13,6 +13,5 @@ from KWS.my_test_case import MyTestCase
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common import exceptions 
 import os
-locator = ''
-a= locator.count('|')
-print(locator,a)
+
+assert('aaa' in 'aaaasdjaskdjla')

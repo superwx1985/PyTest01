@@ -13,7 +13,7 @@ from KWS.my_test_case import MyTestCase
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-def run_excel_tc(excel_file, ot=10, print_=False, tcid=1, level=0, dr=None, asserted=[], failed=[], err=[]):
+def run_excel_tc(excel_file, ot=10, print_=False, tcid=1, level=0, dr=None, debug=False, asserted=[], failed=[], err=[]):
     # err = err_
     # failed = failed_
     #tcid = tcid_
@@ -170,17 +170,20 @@ def run_excel_tc(excel_file, ot=10, print_=False, tcid=1, level=0, dr=None, asse
             SSname = 'D:\\vic_test_data\\KWS_test\\error_' + datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.%f") + '_SS.png'
             dr.get_screenshot_as_file(SSname)
             print('SS was saved as %s\nThe final URL is "%s"' % (SSname, dr.current_url))
+            dr.quit()
         except:
             print('cannot get the SS and final URL, because:')
-            dr.quit()
-            raise
-        dr.quit()
-        raise #for debug
+            if dr != None:
+                dr.quit()
+            if debug == True:
+                raise #for debug
+            return asserted, failed, err
+
 
 
 if __name__ == '__main__':
     bace_dir = os.path.dirname(__file__)
-    result = run_excel_tc(excel_file=bace_dir + '\\TC\\test.xlsx', ot=3,print_=True)
+    result = run_excel_tc(excel_file=bace_dir + '\\TC\\test.xlsx', ot=3,print_=True,debug=True)
     print('asserted: %r\tfailed: %r\terror: %r' % (len(result[0]), len(result[1]), len(result[2])))
     print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), result)
     time.sleep(1)
