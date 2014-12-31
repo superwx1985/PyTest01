@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
-# coding=utf-8
-import time, unittest, datetime, threading, wait_element
-from selenium import webdriver
-from KWS.test_case.public import KWS_module
+import pyodbc
 
-from KWS.my_test_case import MyTestCase
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.common import exceptions 
-
-
-data = dict(Id=86132002,Name='861320edit02',IsDeleted=False,CreatedBy='QA1',ModifiedBy='QA1')
-print (data)
+def run_sql(server, database, user='', pwd='', trusted='yes', sql_str=''):
+    conn_str = 'Driver={SQL Server};Server=%s;Database=%s;UID=%s;PWD=%s;Trusted_Connection=%s;'%(server, database, user, pwd, trusted)
+    with pyodbc.connect(conn_str) as connect:
+        cursor = connect.cursor()
+        cursor.execute(sql_str)
+        row_description = cursor.description
+        result = []
+        for row_value in cursor.fetchall():
+            row = []
+            for column in range(len(row_description)):
+                row.append((column+1,row_description[column][0],row_value[column]))
+            result.append(row)
+    return result
+result=run_sql(server='testregistrydb.cx63o2hqi2wj.us-east-1.rds.amazonaws.com', database='TestRegistry', user='SQLQAUser', pwd='abc123!', trusted='no', sql_str = "SELECT TOP 1 * FROM [TestRegistry].[dbo].[RawRetailerRegistry] where RetailerRegistryCode = 'vic14123106'")
+for i in result:
+    print(i)
