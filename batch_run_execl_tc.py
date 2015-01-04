@@ -18,7 +18,7 @@ def get_tc(tc_dir, print_=False):
         print(tcs)
     return tcs
 def batch_run_excel(tcs, ot=10, print_=False, debug=False):
-    print('========== BEGIN ==========\n')
+    print('====================\tbegin\t====================\n')
     run=[]
     passed=[]
     failed=[]
@@ -30,8 +30,8 @@ def batch_run_excel(tcs, ot=10, print_=False, debug=False):
         time.sleep(1)
         tcid+=1
         tcs_result.append((tc[1],tc_result))
-    #print('\n\n',tcs_result,'\n\n')
-    print('\n\n========== test result ==========\n')
+    print('\n\n',tcs_result,'\n\n')
+    print('\n\n====================\tresult\t====================\n')
     for i in tcs_result:
         run.append(i[0])
         if len(i[1][1]) == 0 and len(i[1][2]) == 0:
@@ -41,29 +41,29 @@ def batch_run_excel(tcs, ot=10, print_=False, debug=False):
         else:
             failed.append((i[0],i[1][0],i[1][1],i[1][2]))
     print('run: %r    passed: %r    failed: %r    error: %r\n' %(len(run),len(passed),len(failed),len(err)))
-    print('========== run ==========\n\n%r\n' %run)
+    print('====================\trun\t====================\n\n%r\n' %run)
     if len(passed)>0:
-        print('========== passed ==========\n')
+        print('====================\tpassed\t====================\n')
         for i in passed:
             print(i[0])
             print('> asserted step:\t',i[1])
             print('> failed step:\t\t',i[2])
             print('> error step:\t\t',i[3],'\n')
     if len(failed)>0:
-        print('========== failed ==========\n')
+        print('====================\tfailed\t====================\n')
         for i in failed:
             print(i[0])
             print('> asserted step:\t',i[1])
             print('> failed step:\t\t',i[2])
             print('> error step:\t\t',i[3],'\n')
     if len(err)>0:
-        print('========== error ==========\n')
+        print('====================\terror\t====================\n')
         for i in err:
             print(i[0])
             print('> asserted step:\t',i[1])
             print('> failed step:\t\t',i[2])
             print('> error step:\t\t',i[3],'\n')
-    print('========== END ==========\n')
+    print('====================\tend\t====================\n')
         
 if __name__ == '__main__':
     bace_dir = os.path.dirname(__file__)

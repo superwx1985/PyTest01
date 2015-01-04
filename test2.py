@@ -1,19 +1,23 @@
 # -*- coding: utf-8 -*-
-import pyodbc
 
-def run_sql(server, database, user='', pwd='', trusted='yes', sql_str=''):
-    conn_str = 'Driver={SQL Server};Server=%s;Database=%s;UID=%s;PWD=%s;Trusted_Connection=%s;'%(server, database, user, pwd, trusted)
-    with pyodbc.connect(conn_str) as connect:
-        cursor = connect.cursor()
-        cursor.execute(sql_str)
-        row_description = cursor.description
-        result = []
-        for row_value in cursor.fetchall():
-            row = []
-            for column in range(len(row_description)):
-                row.append((column+1,row_description[column][0],row_value[column]))
-            result.append(row)
-    return result
-result=run_sql(server='testregistrydb.cx63o2hqi2wj.us-east-1.rds.amazonaws.com', database='TestRegistry', user='SQLQAUser', pwd='abc123!', trusted='no', sql_str = "SELECT TOP 1 * FROM [TestRegistry].[dbo].[RawRetailerRegistry] where RetailerRegistryCode = 'vic14123106'")
-for i in result:
-    print(i)
+def change_string_to_int(data):
+    if data is None or data == '':
+        new_data = ot
+    elif isinstance(data, (int, float)):
+        new_data = round(data)
+    elif isinstance(data, str):
+        if data.isdigit():
+            new_data = int(data)
+        else:
+            float_data = data.split(sep='.')
+            if len(float_data)==2 and float_data[0].isdigit() and float_data[1].isdigit():
+                new_data = round(float(data))     
+            else:
+                raise Exception('please check the input data')
+    else:
+        raise Exception('please check the input data')
+    return new_data
+a = ''
+
+new_data = change_string_to_int(a)
+print(new_data)
