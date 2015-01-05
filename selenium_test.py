@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import time, KWS_module, threading, unittest
+import time, threading, unittest
+from KWS import KWS_module
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
@@ -13,70 +14,70 @@ browser = 4  # 1=ie, 2=ff, 3=chrome, 4=remote_chrome, 5=remote_mac, 6=remote_ff
 
 if False:
     br = webdriver.Firefox()
-    br.get(KWS_module.baseURL)
+    br.get(KWS.KWS_module.baseURL)
 
 def c1(environment, browser):
-    driver = KWS_module.Driver(environment, browser)
+    driver = KWS.KWS_module.Driver(environment, browser)
     print(time.strftime('%Y-%m-%d %H:%M:%S'), threading.currentThread(), 'case 1 start')
-    KWS_module.KWS_add_product_beer(driver, 2)
-    KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
-    KWS_module.KWS_shopping_cart_checkout_as_guest(driver)
-    KWS_module.KWS_checkout_via_credit_card(driver)
+    KWS.KWS_module.KWS_add_product_beer(driver, 2)
+    KWS.KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
+    KWS.KWS_module.KWS_shopping_cart_checkout_as_guest(driver)
+    KWS.KWS_module.KWS_checkout_via_credit_card(driver)
     input(time.strftime('%Y-%m-%d %H:%M:%S') + ' ' + str(threading.currentThread()) + ' ' + 'case 1 has finished, press any key to continue\n')
     driver.br.quit()
     
     
 def c2(environment, browser):
-    driver = KWS_module.Driver(environment, browser)
+    driver = KWS.KWS_module.Driver(environment, browser)
     print(time.strftime('%Y-%m-%d %H:%M:%S'), threading.currentThread(), 'case 2 start')
-    KWS_module.KWS_add_product_paddle_fan(driver, 7)
-    KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
-    KWS_module.KWS_shopping_cart_checkout_as_user(driver)
-    KWS_module.KWS_checkout_via_credit_card(driver)
+    KWS.KWS_module.KWS_add_product_paddle_fan(driver, 7)
+    KWS.KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
+    KWS.KWS_module.KWS_shopping_cart_checkout_as_user(driver)
+    KWS.KWS_module.KWS_checkout_via_credit_card(driver)
     input(time.strftime('%Y-%m-%d %H:%M:%S') + ' ' + str(threading.currentThread()) + ' ' + 'case 2 has finished, press any key to continue\n')
     driver.br.quit()
     
     
 def c3(environment, browser):
-    driver = KWS_module.Driver(environment, browser)
+    driver = KWS.KWS_module.Driver(environment, browser)
     print(time.strftime('%Y-%m-%d %H:%M:%S'), threading.currentThread(), 'case 3 start')
-    KWS_module.KWS_add_product_beer(driver, 2)
-    KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
-    KWS_module.KWS_shopping_cart_checkout_as_guest(driver)
-    KWS_module.KWS_checkout_via_paypal(driver)
+    KWS.KWS_module.KWS_add_product_beer(driver, 2)
+    KWS.KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
+    KWS.KWS_module.KWS_shopping_cart_checkout_as_guest(driver)
+    KWS.KWS_module.KWS_checkout_via_paypal(driver)
     input(time.strftime('%Y-%m-%d %H:%M:%S') + ' ' + str(threading.currentThread()) + ' ' + 'case 3 has finished, press any key to continue\n')
     driver.br.quit()
 
     
 def c4(environment, browser):
-    driver = KWS_module.Driver(environment, browser)
+    driver = KWS.KWS_module.Driver(environment, browser)
     print(time.strftime('%Y-%m-%d %H:%M:%S'), threading.currentThread(), 'case 4 start')
-    KWS_module.KWS_add_product_paddle_fan(driver)
-    KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
-    KWS_module.KWS_shopping_cart_checkout_as_user(driver)
-    KWS_module.KWS_checkout_via_paypal(driver)
+    KWS.KWS_module.KWS_add_product_paddle_fan(driver)
+    KWS.KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
+    KWS.KWS_module.KWS_shopping_cart_checkout_as_user(driver)
+    KWS.KWS_module.KWS_checkout_via_paypal(driver)
     input(time.strftime('%Y-%m-%d %H:%M:%S') + ' ' + str(threading.currentThread()) + ' ' + 'case 4 has finished, press any key to continue\n')
     driver.br.quit()
     
     
 def c5(environment, browser):
-    driver = KWS_module.Driver(environment, browser)
+    driver = KWS.KWS_module.Driver(environment, browser)
     print(time.strftime('%Y-%m-%d %H:%M:%S'), threading.currentThread(), 'case 5 start')
-    KWS_module.KWS_add_product_beer(driver, 2)
-    KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
-    KWS_module.KWS_shopping_cart_checkout_as_guest(driver)
-    KWS_module.KWS_checkout_via_amazon(driver)
+    KWS.KWS_module.KWS_add_product_beer(driver, 2)
+    KWS.KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
+    KWS.KWS_module.KWS_shopping_cart_checkout_as_guest(driver)
+    KWS.KWS_module.KWS_checkout_via_amazon(driver)
     input(time.strftime('%Y-%m-%d %H:%M:%S') + ' ' + str(threading.currentThread()) + ' ' + 'case 5 has finished, press any key to continue\n')
     driver.br.quit()
     
  
 def c6(environment, browser):
-    driver = KWS_module.Driver(environment, browser)
+    driver = KWS.KWS_module.Driver(environment, browser)
     print(time.strftime('%Y-%m-%d %H:%M:%S'), threading.currentThread(), 'case 6 start')
-    KWS_module.KWS_add_product_paddle_fan(driver, 7)
-    KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
-    KWS_module.KWS_shopping_cart_checkout_as_user(driver)
-    KWS_module.KWS_checkout_via_amazon(driver)
+    KWS.KWS_module.KWS_add_product_paddle_fan(driver, 7)
+    KWS.KWS_module.KWS_go_to_shopping_cart_via_cart_flyout(driver)
+    KWS.KWS_module.KWS_shopping_cart_checkout_as_user(driver)
+    KWS.KWS_module.KWS_checkout_via_amazon(driver)
     input(time.strftime('%Y-%m-%d %H:%M:%S') + ' ' + str(threading.currentThread()) + ' ' + 'case 6 has finished, press any key to continue\n')
     driver.br.quit()
 

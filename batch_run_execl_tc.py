@@ -17,7 +17,7 @@ def get_tc(tc_dir, print_=False):
     if (print_):
         print(tcs)
     return tcs
-def batch_run_excel(tcs, ot=10, print_=False, debug=False):
+def batch_run_excel(tcs, base_ot=10, print_=False, debug=False):
     print('====================\tbegin\t====================\n')
     run=[]
     passed=[]
@@ -26,7 +26,7 @@ def batch_run_excel(tcs, ot=10, print_=False, debug=False):
     tcid=1
     tcs_result=[]
     for tc in tcs:
-        tc_result = run_excel_tc.run_excel_tc(excel_file=tc[0],ot=ot, print_=print_, tcid=tcid, debug=debug)
+        tc_result = run_excel_tc.run_excel_tc(excel_file=tc[0],base_ot=base_ot, print_=print_, tcid=tcid, debug=debug)
         time.sleep(1)
         tcid+=1
         tcs_result.append((tc[1],tc_result))
@@ -68,4 +68,4 @@ def batch_run_excel(tcs, ot=10, print_=False, debug=False):
 if __name__ == '__main__':
     bace_dir = os.path.dirname(__file__)
     tcs = get_tc(bace_dir+'\\TC\\')
-    batch_run_excel(tcs,ot=3,print_=True,debug=False)
+    batch_run_excel(tcs,base_ot=3,print_=True,debug=False)

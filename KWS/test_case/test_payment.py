@@ -101,8 +101,8 @@ if __name__ == '__main__':
     # unittest.main(warnings='ignore')
     
     suite = unittest.TestSuite()
-    suite.addTest(MyTest('test_01', 1, 3))
     suite.addTest(MyTest('test_02', 1, 3))
+    suite.addTest(MyTest('test_06', 1, 3))
     print(suite)
     runner = unittest.TextTestRunner()
     runner.run(suite)

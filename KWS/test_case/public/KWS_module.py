@@ -186,7 +186,7 @@ def checkout_via_amazon(driver):
     WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
     time.sleep(3)
     nowwindow = driver.br.current_window_handle
-    wait_element.try_to_click(driver.br, 'css selector', '#payWithAmazon img', 5)
+    wait_element.try_to_click(driver.br, 'css selector', '.amazon-payment-button-loaded', 5)
     time.sleep(10)
     allwindow = driver.br.window_handles
     for x in allwindow:
@@ -204,7 +204,7 @@ def checkout_via_amazon(driver):
     WebDriverWait(driver.br, 60).until(lambda x: x.find_element_by_xpath('//p[text()="Total:"]').is_displayed())
     WebDriverWait(driver.br, 60).until_not(lambda x: x.find_element_by_id('data_loading').is_displayed())
     time.sleep(3)
-    driver.br.find_element_by_css_selector('.buffer.text-right button').click()
+    wait_element.try_to_click(driver.br, 'xpath', '//a[contains(text(),"SUBMIT ORDER")]', 5)
     tracking_number = wait_element.wait_for_element_visible(driver.br, 'css selector', 'span.text-info.underline strong', 10)
     print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'amazon', tracking_number[0].text)
 

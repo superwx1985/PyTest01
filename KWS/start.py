@@ -73,7 +73,7 @@ def suite1():
 def suite2():
     suite = unittest.TestSuite()
     suite.addTest(test_payment.MyTest('test_03', 1, 1))
-    suite.addTest(test_payment.MyTest('test_04', 1, 3))
+    suite.addTest(test_payment.MyTest('test_04', 1, 1))
     return suite
 
 def suite3():
@@ -88,9 +88,9 @@ def suite3():
 #suite.addTest(test_list_page.MyTest('test_01', 1, 3))
 #suite.addTest(test_list_page.MyTest('test_02', 1, 2))
 
-#suite.addTest(suite1())     #这样可以把几个 testcase 组合成一组
-#suite.addTest(suite2())
-suite.addTest(suite3())
+suite.addTest(suite1())     #这样可以把几个 testcase 组合成一组
+suite.addTest(suite2())
+#suite.addTest(suite3())
 
 print('test suite: ', suite)
 reportname = RunCase(suite, 0)  # 第二位参数代表是否用多线程运行
