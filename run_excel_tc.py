@@ -54,7 +54,6 @@ def run_excel_tc(excel_file, base_ot=10, print_=False, tcid=1, level=0, dr=None,
     # tcid = tcid_
     id_ = str(tcid) + '-' + str(level) + '-' + str(0)
     try:
-        raise Exception('test')
         data = import_test_data.get_excle_data(excel_file, 'TC')
         config_ = import_test_data.get_excle_data(excel_file, 'Config')
         server = change_digit_to_string(config_['B2'])
@@ -153,7 +152,7 @@ def run_excel_tc(excel_file, base_ot=10, print_=False, tcid=1, level=0, dr=None,
                     wait_element.wait_for_text_present(dr, data_, ot, print_)
                     asserted.append((id_, 'text presented ==> [%s]' % data_))
                 except AssertionError as e:
-                    print('assert failed: ',(id_, str(e)))
+                    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'assert failed: ',(id_, str(e)))
                     failed.append((id_, str(e)))
                     
             elif data['C' + str(row)] == 'verify element':
@@ -166,7 +165,7 @@ def run_excel_tc(excel_file, base_ot=10, print_=False, tcid=1, level=0, dr=None,
                     wait_element.wait_for_element_visible(dr, data['D' + str(row)], locator, ot, print_)
                     asserted.append((id_, 'element visible ==> [%s|%s]' % (data['D' + str(row)], data['E' + str(row)])))
                 except AssertionError as e:
-                    print('assert failed: ',(id_, str(e)))
+                    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'assert failed: ',(id_, str(e)))
                     failed.append((id_, str(e)))
                     
             elif data['C' + str(row)] == 'switch to':
@@ -186,7 +185,7 @@ def run_excel_tc(excel_file, base_ot=10, print_=False, tcid=1, level=0, dr=None,
                     print('DB record existed ==> (SQL in cell [F%s])' % str(row))
                     asserted.append((id_, 'DB record existed ==> (SQL in cell [F%s])' % str(row)))
                 except AssertionError as e:
-                    print('assert failed: ',(id_, str(e)))
+                    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), 'assert failed: ',(id_, str(e)))
                     failed.append((id_, str(e)))
 
             elif data['C' + str(row)] == 'share step':
@@ -203,29 +202,32 @@ def run_excel_tc(excel_file, base_ot=10, print_=False, tcid=1, level=0, dr=None,
 
     except Exception as e:
         err.append((id_, e))
-        #raise Exception('test')
         if debug == True:
             raise
     finally:
+        if level == 0 or err != []:
+            if dr == None:
+                print('cannot get the screenshot and current URL, because webdriver dose not exist')
+            else:
+                SSname = 'D:\\vic_test_data\\KWS_test\\screenshot_' + datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.%f") + '_SS.png'
+                dr.get_screenshot_as_file(SSname)
+                print('screenshot was saved as %s\ncurrent URL is "%s"' % (SSname, dr.current_url))
+                if level == 0:
+                    dr.quit()
         if level != 0:
             print (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), str(tcid) + '-' + str(level) + '-E', 'leave share TC ==> ' + excel_file)
             level -= 1
-            return asserted, failed, err
-        elif dr == None:
-            print('cannot get the SS and final URL, because webdriver dose not exist')
+        if debug == True and err != []:
+            print(1,str(err))
+            raise
         else:
-            SSname = 'D:\\vic_test_data\\KWS_test\\result_' + datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.%f") + '_SS.png'
-            dr.get_screenshot_as_file(SSname)
-            print('SS was saved as %s\nThe final URL is "%s"' % (SSname, dr.current_url))
-            dr.quit()
-        if debug == False or err is None:
             return asserted, failed, err
     
 
 if __name__ == '__main__':
     bace_dir = os.path.dirname(__file__)
     result = (None, None, None)
-    result = run_excel_tc(excel_file=bace_dir + '\\TC\\test.xlsx', base_ot=3, print_=True, debug=True)
+    result = run_excel_tc(excel_file=bace_dir + '\\TC\\test.xlsx', base_ot=5, print_=True, debug=True)
     print('asserted: %r\tfailed: %r\terror: %r' % (len(result[0]), len(result[1]), len(result[2])))
     print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f"), result)
     print('%s\n%s\n%s' %(result[0],result[1],result[2]))
