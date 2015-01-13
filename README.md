@@ -1,4 +1,4 @@
-PyTest01
+py_test
 ========
 
 Python &amp; selenium
